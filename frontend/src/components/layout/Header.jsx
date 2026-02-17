@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, Menu, LogOut, Settings } from 'lucide-react';
+import { Bell, User, Menu, LogOut, Settings, Phone } from 'lucide-react';
 import { useAuthStore, useNotificationStore } from '../../store';
 import Dropdown from '../common/Dropdown';
 import Badge from '../common/Badge';
+import './header.css'; // Import the CSS file
 
 const Header = ({ onMenuClick }) => {
   const { user, logout } = useAuthStore();
@@ -15,37 +16,39 @@ const Header = ({ onMenuClick }) => {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-      <div className="flex items-center justify-between px-4 py-3">
+    <header className="app-header">
+      <div className="header-container">
         {/* Left: Logo and Menu */}
-        <div className="flex items-center gap-4">
+        <div className="header-left">
           <button
             onClick={onMenuClick}
-            className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+            className="menu-button"
+            aria-label="Toggle menu"
           >
             <Menu size={24} />
           </button>
           
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">M</span>
+          <Link to="/dashboard" className="logo-link">
+            <div className="logo-icon">
+              <span>M</span>
             </div>
-            <span className="text-xl font-bold text-gray-900 hidden sm:block">
+            <span className="logo-text">
               M-Pesa System
             </span>
           </Link>
         </div>
 
         {/* Right: Notifications and User */}
-        <div className="flex items-center gap-4">
+        <div className="header-right">
           {/* Notifications */}
           <Link 
             to="/notifications" 
-            className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="notification-link"
+            aria-label="Notifications"
           >
-            <Bell size={24} className="text-gray-600" />
+            <Bell size={22} className="notification-icon" />
             {unreadCount > 0 && (
-              <span className="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+              <span className="notification-badge">
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
@@ -55,45 +58,49 @@ const Header = ({ onMenuClick }) => {
           <Dropdown
             align="right"
             trigger={
-              <button className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                  <User size={18} className="text-white" />
+              <button className="user-trigger" aria-label="User menu">
+                <div className="user-avatar">
+                  <User size={20} />
                 </div>
-                <span className="hidden md:block text-sm font-medium text-gray-700">
+                <span className="user-name">
                   {user?.first_name || 'User'}
                 </span>
               </button>
             }
+            menuClassName="dropdown-menu"
           >
-            <div className="px-4 py-3 border-b border-gray-200">
-              <p className="text-sm font-medium text-gray-900">
+            <div className="dropdown-header">
+              <div className="dropdown-user-name">
                 {user?.full_name || `${user?.first_name} ${user?.last_name}`}
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
+              </div>
+              <div className="dropdown-user-phone">
+                <Phone size={14} />
                 {user?.phone_number}
-              </p>
+              </div>
             </div>
 
             <Dropdown.Item 
-              icon={<User size={16} />}
+              icon={<User size={18} />}
               onClick={() => window.location.href = '/profile'}
+              className="dropdown-item"
             >
               Profile
             </Dropdown.Item>
 
             <Dropdown.Item 
-              icon={<Settings size={16} />}
+              icon={<Settings size={18} />}
               onClick={() => window.location.href = '/settings'}
+              className="dropdown-item"
             >
               Settings
             </Dropdown.Item>
 
-            <Dropdown.Divider />
+            <div className="dropdown-divider" />
 
             <Dropdown.Item 
-              icon={<LogOut size={16} />}
+              icon={<LogOut size={18} />}
               onClick={handleLogout}
-              danger
+              className="dropdown-item danger"
             >
               Logout
             </Dropdown.Item>

@@ -7,6 +7,7 @@ import Alert from '../../components/common/Alert';
 import { authAPI } from '../../services/api';
 import { useAuthStore } from '../../store';
 import toast from 'react-hot-toast';
+import './login.css'; // Import the CSS file
 
 const Login = () => {
   const navigate = useNavigate();
@@ -60,97 +61,108 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          Welcome Back
-        </h2>
-        <p className="text-gray-600">
-          Login to access your account
-        </p>
-      </div>
+    <div className="login-container">
+      <div className="login-card">
+        <div className="login-card-inner">
+          {/* Logo */}
+          <div className="login-logo">
+            <div className="logo-circle">
+              <span>M</span>
+            </div>
+          </div>
 
-      {error && (
-        <Alert 
-          type="error" 
-          message={error} 
-          onClose={() => setError('')}
-          className="mb-4"
-        />
-      )}
+          {/* Header */}
+          <div className="login-header">
+            <h1 className="login-title">Welcome Back</h1>
+            <p className="login-subtitle">Login to access your account</p>
+          </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Phone Number"
-          type="tel"
-          name="phone_number"
-          value={formData.phone_number}
-          onChange={(value) => handleChange('phone_number', value)}
-          placeholder="254712345678"
-          icon={<Phone size={20} />}
-          required
-          maxLength={12}
-          helperText="Format: 254XXXXXXXXX"
-        />
+          {/* Error Alert */}
+          {error && (
+            <div className="login-alert">
+              <Alert 
+                type="error" 
+                message={error} 
+                onClose={() => setError('')}
+              />
+            </div>
+          )}
 
-        <Input
-          label="PIN"
-          type="password"
-          name="pin"
-          value={formData.pin}
-          onChange={(value) => handleChange('pin', value)}
-          placeholder="Enter your 4-digit PIN"
-          icon={<Lock size={20} />}
-          required
-          maxLength={4}
-        />
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="input-wrapper">
+              <label className="input-label">Phone Number</label>
+              <input
+                type="tel"
+                value={formData.phone_number}
+                onChange={(e) => handleChange('phone_number', e.target.value)}
+                placeholder="254712345678"
+                className="input-field"
+                required
+                maxLength={12}
+              />
+              <Phone className="input-icon" size={20} />
+              <span className="input-helper">Format: 254XXXXXXXXX</span>
+            </div>
 
-        <div className="flex items-center justify-between">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
-            />
-            <span className="ml-2 text-sm text-gray-600">Remember me</span>
-          </label>
+            <div className="input-wrapper">
+              <label className="input-label">PIN</label>
+              <input
+                type="password"
+                value={formData.pin}
+                onChange={(e) => handleChange('pin', e.target.value)}
+                placeholder="Enter your 4-digit PIN"
+                className="input-field"
+                required
+                maxLength={4}
+              />
+              <Lock className="input-icon" size={20} />
+            </div>
 
-          <Link 
-            to="/forgot-pin" 
-            className="text-sm text-green-600 hover:text-green-700 font-medium"
-          >
-            Forgot PIN?
-          </Link>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <label className="remember-me">
+                <input type="checkbox" />
+                <span>Remember me</span>
+              </label>
+
+              <Link to="/forgot-pin" className="forgot-pin">
+                Forgot PIN?
+              </Link>
+            </div>
+
+            <button
+              type="submit"
+              className="login-button"
+              disabled={loading}
+            >
+              {loading ? (
+                <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                  <span className="loading-spinner"></span>
+                  Logging in...
+                </span>
+              ) : (
+                'Login'
+              )}
+            </button>
+          </form>
+
+          {/* Register Link */}
+          <div className="register-section">
+            <p className="register-text">
+              Don't have an account?
+              <Link to="/register" className="register-link">
+                Register here
+              </Link>
+            </p>
+          </div>
+
+          {/* Demo Credentials */}
+          <div className="demo-credentials">
+            <p className="demo-title">Demo Credentials</p>
+            <p className="demo-phone">254712345678</p>
+            <p className="demo-pin">1234</p>
+          </div>
         </div>
-
-        <Button
-          type="submit"
-          variant="primary"
-          size="lg"
-          fullWidth
-          loading={loading}
-          disabled={loading}
-        >
-          Login
-        </Button>
-      </form>
-
-      <div className="mt-6 text-center">
-        <p className="text-sm text-gray-600">
-          Don't have an account?{' '}
-          <Link 
-            to="/register" 
-            className="text-green-600 hover:text-green-700 font-medium"
-          >
-            Register here
-          </Link>
-        </p>
-      </div>
-
-      {/* Demo credentials */}
-      <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
-        <p className="text-xs text-blue-800 font-medium mb-2">Demo Credentials:</p>
-        <p className="text-xs text-blue-600">Phone: 254712345678</p>
-        <p className="text-xs text-blue-600">PIN: 1234</p>
       </div>
     </div>
   );
