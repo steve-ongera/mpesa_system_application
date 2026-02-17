@@ -7,24 +7,37 @@ import uuid
 
 class UserManager(BaseUserManager):
     """Custom user manager for phone number authentication"""
-    
-    def create_user(self, phone_number, pin, **extra_fields):
+
+    def create_user(self, phone_number, pin=None, **extra_fields):
         if not phone_number:
             raise ValueError('Phone number is required')
+
         if not pin:
             raise ValueError('PIN is required')
-        
+
         user = self.model(phone_number=phone_number, **extra_fields)
-        user.set_password(pin)  # This hashes the PIN
+
+        # Hash the PIN
+        user.set_password(str(pin))
+        user.pin = pin  # (not recommended for security, but keeping your design)
+
         user.save(using=self._db)
         return user
-    
-    def create_superuser(self, phone_number, pin, **extra_fields):
+
+    def create_superuser(self, phone_number, pin=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
-        
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
         return self.create_user(phone_number, pin, **extra_fields)
+
+
 
 
 class User(AbstractBaseUser, PermissionsMixin):
