@@ -1,0 +1,489 @@
+/* auth-layout.css - Authentication Layout Styles with Safaricom/M-Pesa Theme */
+
+/* ==========================================================================
+   Auth Layout Specific Styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Main Layout Container
+   -------------------------------------------------------------------------- */
+.auth-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  .auth-layout {
+    flex-direction: row;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Left Side - Branding Section
+   -------------------------------------------------------------------------- */
+.auth-brand {
+  background: linear-gradient(135deg, var(--safaricom-green) 0%, var(--safaricom-green-dark) 100%);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .auth-brand {
+    width: 50%;
+    padding: 3rem;
+  }
+}
+
+/* Decorative Background Elements */
+.auth-brand::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.auth-brand::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Logo Section */
+.auth-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-logo-icon {
+  width: 3rem;
+  height: 3rem;
+  background: white;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.auth-logo:hover .auth-logo-icon {
+  transform: rotate(5deg) scale(1.05);
+}
+
+.auth-logo-icon span {
+  color: var(--safaricom-green);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.auth-logo-text {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Brand Content */
+.auth-brand-content {
+  max-width: 28rem;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-brand-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 1024px) {
+  .auth-brand-title {
+    font-size: 3rem;
+  }
+}
+
+.auth-brand-subtitle {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Features List */
+.auth-features {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  animation: slideInRight 0.5s ease forwards;
+  opacity: 0;
+}
+
+.auth-feature:nth-child(1) { animation-delay: 0.2s; }
+.auth-feature:nth-child(2) { animation-delay: 0.3s; }
+.auth-feature:nth-child(3) { animation-delay: 0.4s; }
+
+.auth-feature-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  color: white;
+}
+
+.auth-feature-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.auth-feature-content {
+  flex: 1;
+}
+
+.auth-feature-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.auth-feature-description {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+}
+
+/* Bottom Text */
+.auth-copyright {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Right Side - Form Section
+   -------------------------------------------------------------------------- */
+.auth-form-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--safaricom-background);
+}
+
+@media (min-width: 1024px) {
+  .auth-form-section {
+    width: 50%;
+  }
+}
+
+.auth-form-container {
+  width: 100%;
+  max-width: 28rem;
+  animation: fadeIn 0.5s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Animation Keyframes
+   -------------------------------------------------------------------------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Design
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .auth-brand {
+    padding: 2rem;
+  }
+  
+  .auth-brand-title {
+    font-size: 2rem;
+  }
+  
+  .auth-logo-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .auth-logo-icon span {
+    font-size: 1.25rem;
+  }
+  
+  .auth-logo-text {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-brand {
+    padding: 1.5rem;
+  }
+  
+  .auth-brand-title {
+    font-size: 1.75rem;
+  }
+  
+  .auth-brand-subtitle {
+    font-size: 1rem;
+  }
+  
+  .auth-feature-title {
+    font-size: 0.9375rem;
+  }
+  
+  .auth-feature-description {
+    font-size: 0.8125rem;
+  }
+  
+  .auth-form-section {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-brand {
+    padding: 1.25rem;
+  }
+  
+  .auth-logo {
+    margin-bottom: 2rem;
+  }
+  
+  .auth-brand-title {
+    font-size: 1.5rem;
+  }
+  
+  .auth-feature {
+    gap: 0.5rem;
+  }
+  
+  .auth-feature-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  .auth-form-section {
+    padding: 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Animation Delays
+   -------------------------------------------------------------------------- */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.4s; }
+.delay-4 { animation-delay: 0.5s; }
+
+/* --------------------------------------------------------------------------
+   Utility Classes (if not already defined)
+   -------------------------------------------------------------------------- */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.mb-12 {
+  margin-bottom: 3rem;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.p-8 {
+  padding: 2rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-green-100 {
+  color: rgba(30, 179, 30, 0.1);
+}
+
+.w-6 {
+  width: 1.5rem;
+}
+
+.h-6 {
+  height: 1.5rem;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.h-12 {
+  height: 3rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   CSS Variables (if not already defined)
+   -------------------------------------------------------------------------- */
+:root {
+  --safaricom-green: #1eb31e;
+  --safaricom-green-dark: #168f16;
+  --safaricom-green-light: #e8f5e8;
+  --safaricom-text: #2c3e50;
+  --safaricom-text-light: #5a6b7a;
+  --safaricom-text-lighter: #7f8c8d;
+  --safaricom-border: #e0e7e9;
+  --safaricom-background: #f8fafc;
+  --mpesa-teal: #00a3a3;
+  --gradient-primary: linear-gradient(135deg, #1eb31e 0%, #00a3a3 100%);
+}
+
+/* --------------------------------------------------------------------------
+   Min Height Utility
+   -------------------------------------------------------------------------- */
+.min-h-screen {
+  min-height: 100vh;
+}
+
+/* --------------------------------------------------------------------------
+   Background Colors
+   -------------------------------------------------------------------------- */
+.bg-gray-50 {
+  background: #f9fafb;
+}

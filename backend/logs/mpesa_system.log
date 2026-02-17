@@ -62,3 +62,183 @@ INFO 2026-02-17 11:06:40,121 basehttp "GET /static/admin/img/selector-icons.svg 
 INFO 2026-02-17 11:06:47,671 basehttp "POST /admin/web_app/user/5cca19dd-334c-4641-93fe-c66e0f2b24c7/change/ HTTP/1.1" 302 0
 INFO 2026-02-17 11:06:47,724 basehttp "GET /admin/web_app/user/ HTTP/1.1" 200 16733
 INFO 2026-02-17 11:06:47,771 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 12:22:30,919 basehttp "OPTIONS /api/v1/auth/login/ HTTP/1.1" 200 0
+WARNING 2026-02-17 12:22:33,513 log Unauthorized: /api/v1/auth/login/
+WARNING 2026-02-17 12:22:33,514 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+WARNING 2026-02-17 12:26:02,823 log Unauthorized: /api/v1/auth/login/
+WARNING 2026-02-17 12:26:02,823 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+INFO 2026-02-17 12:32:46,429 basehttp "OPTIONS /api/v1/auth/register/ HTTP/1.1" 200 0
+INFO 2026-02-17 12:32:50,616 basehttp "POST /api/v1/auth/register/ HTTP/1.1" 201 975
+INFO 2026-02-17 12:32:50,910 basehttp "OPTIONS /api/v1/transactions/recent/ HTTP/1.1" 200 0
+INFO 2026-02-17 12:32:50,911 basehttp "OPTIONS /api/v1/transactions/statistics/ HTTP/1.1" 200 0
+INFO 2026-02-17 12:32:50,919 basehttp "OPTIONS /api/v1/transactions/recent/ HTTP/1.1" 200 0
+INFO 2026-02-17 12:32:50,920 basehttp "OPTIONS /api/v1/transactions/statistics/ HTTP/1.1" 200 0
+INFO 2026-02-17 12:32:50,959 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:32:50,960 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 183
+INFO 2026-02-17 12:32:50,983 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:32:50,989 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 183
+INFO 2026-02-17 12:47:21,711 basehttp "GET /admin/web_app/user/ HTTP/1.1" 200 17173
+INFO 2026-02-17 12:47:21,756 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 12:47:23,895 basehttp "GET /admin/web_app/user/5b7d2a8d-1128-459a-9707-ea0663623ba8/change/ HTTP/1.1" 200 27068
+INFO 2026-02-17 12:47:23,938 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 12:47:37,782 basehttp "POST /admin/web_app/user/5b7d2a8d-1128-459a-9707-ea0663623ba8/change/ HTTP/1.1" 302 0
+INFO 2026-02-17 12:47:37,845 basehttp "GET /admin/web_app/user/ HTTP/1.1" 200 17429
+INFO 2026-02-17 12:47:37,890 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 12:48:29,968 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:48:29,980 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 12:48:29,995 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:48:30,004 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 12:48:40,599 basehttp "GET /admin/web_app/user/5b7d2a8d-1128-459a-9707-ea0663623ba8/change/ HTTP/1.1" 200 27071
+INFO 2026-02-17 12:48:40,641 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 12:48:45,219 basehttp "POST /admin/web_app/user/5b7d2a8d-1128-459a-9707-ea0663623ba8/change/ HTTP/1.1" 302 0
+INFO 2026-02-17 12:48:45,266 basehttp "GET /admin/web_app/user/ HTTP/1.1" 200 17429
+INFO 2026-02-17 12:48:45,312 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 12:48:54,384 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:48:54,393 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 12:48:54,405 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:48:54,414 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 12:49:01,918 basehttp "OPTIONS /api/v1/users/balance/ HTTP/1.1" 200 0
+INFO 2026-02-17 12:49:01,928 basehttp "GET /api/v1/users/balance/ HTTP/1.1" 200 114
+INFO 2026-02-17 12:49:08,032 basehttp "GET /api/v1/users/balance/ HTTP/1.1" 200 114
+INFO 2026-02-17 12:52:13,590 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:52:13,596 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 12:52:13,606 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:52:13,611 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 12:52:14,499 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:52:14,503 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 12:52:14,510 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:52:14,517 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 12:58:11,829 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:58:11,840 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 12:58:11,842 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 12:58:11,850 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 13:05:15,096 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 13:05:15,098 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 13:05:15,112 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 13:05:15,119 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 13:07:39,513 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 30
+INFO 2026-02-17 13:07:39,517 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 186
+INFO 2026-02-17 13:15:06,009 basehttp "OPTIONS /api/v1/transactions/send-money/ HTTP/1.1" 200 0
+ERROR 2026-02-17 13:15:09,500 log Internal Server Error: /api/v1/transactions/send-money/
+Traceback (most recent call last):
+  File "C:\Users\gadaf\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gadaf\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gadaf\AppData\Roaming\Python\Python314\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\gadaf\AppData\Roaming\Python\Python314\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gadaf\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\gadaf\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\gadaf\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\gadaf\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\BACKUP\Complete Projects\mpesa_system_application\backend\web_app\views.py", line 285, in send_money
+    transaction = serializer.save()
+  File "C:\Users\gadaf\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 210, in save
+    self.instance = self.create(validated_data)
+                    ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\contextlib.py", line 85, in inner
+    return func(*args, **kwds)
+  File "D:\BACKUP\Complete Projects\mpesa_system_application\backend\web_app\serializers.py", line 262, in create
+    receiver_wallet = Wallet.objects.get(user=receiver)
+  File "C:\Users\gadaf\AppData\Roaming\Python\Python314\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\gadaf\AppData\Roaming\Python\Python314\site-packages\django\db\models\query.py", line 635, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+web_app.models.Wallet.DoesNotExist: Wallet matching query does not exist.
+ERROR 2026-02-17 13:15:09,523 basehttp "POST /api/v1/transactions/send-money/ HTTP/1.1" 500 124847
+INFO 2026-02-17 13:15:34,586 basehttp "GET /admin/web_app/wallet/ HTTP/1.1" 200 16393
+INFO 2026-02-17 13:15:34,630 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:15:39,276 basehttp "GET /admin/web_app/wallet/add/ HTTP/1.1" 200 20006
+INFO 2026-02-17 13:15:39,327 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:15:48,512 basehttp "POST /admin/web_app/wallet/add/ HTTP/1.1" 302 0
+INFO 2026-02-17 13:15:48,565 basehttp "GET /admin/web_app/wallet/ HTTP/1.1" 200 17387
+INFO 2026-02-17 13:15:48,610 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:15:56,045 basehttp "GET /admin/web_app/wallet/2b7fde88-b74a-4920-96ac-d45a1e4e04be/change/ HTTP/1.1" 200 20374
+INFO 2026-02-17 13:15:56,084 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:16:01,658 basehttp "GET /admin/web_app/user/ HTTP/1.1" 200 17176
+INFO 2026-02-17 13:16:01,690 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:16:03,589 basehttp "GET /admin/web_app/user/5cca19dd-334c-4641-93fe-c66e0f2b24c7/change/ HTTP/1.1" 200 27062
+INFO 2026-02-17 13:16:03,624 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:16:10,518 basehttp "POST /admin/web_app/user/5cca19dd-334c-4641-93fe-c66e0f2b24c7/change/ HTTP/1.1" 302 0
+INFO 2026-02-17 13:16:10,554 basehttp "GET /admin/web_app/user/ HTTP/1.1" 200 17430
+INFO 2026-02-17 13:16:10,609 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:16:18,460 basehttp "POST /api/v1/transactions/send-money/ HTTP/1.1" 201 697
+INFO 2026-02-17 13:16:24,959 basehttp "OPTIONS /api/v1/transactions/?page=1&page_size=15 HTTP/1.1" 200 0
+INFO 2026-02-17 13:16:24,961 basehttp "OPTIONS /api/v1/transactions/?page=1&page_size=15 HTTP/1.1" 200 0
+INFO 2026-02-17 13:16:24,995 basehttp "GET /api/v1/transactions/?page=1&page_size=15 HTTP/1.1" 200 685
+INFO 2026-02-17 13:16:25,017 basehttp "GET /api/v1/transactions/?page=1&page_size=15 HTTP/1.1" 200 685
+INFO 2026-02-17 13:16:34,619 basehttp "GET /admin/web_app/user/ HTTP/1.1" 200 17179
+INFO 2026-02-17 13:16:34,647 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:16:41,287 basehttp "GET /admin/web_app/transaction/ HTTP/1.1" 200 16913
+INFO 2026-02-17 13:16:41,323 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:16:43,197 basehttp "GET /admin/web_app/transactioncharge/ HTTP/1.1" 200 12525
+INFO 2026-02-17 13:16:43,232 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:16:45,460 basehttp "GET /admin/web_app/transaction/ HTTP/1.1" 200 16913
+INFO 2026-02-17 13:16:45,500 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:18:29,336 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 663
+INFO 2026-02-17 13:18:29,352 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 189
+INFO 2026-02-17 13:18:29,390 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 663
+INFO 2026-02-17 13:18:29,414 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 189
+INFO 2026-02-17 13:18:31,896 basehttp "OPTIONS /api/v1/agents/ HTTP/1.1" 200 0
+INFO 2026-02-17 13:18:31,896 basehttp "OPTIONS /api/v1/agents/ HTTP/1.1" 200 0
+INFO 2026-02-17 13:18:31,910 basehttp "GET /api/v1/agents/ HTTP/1.1" 200 30
+INFO 2026-02-17 13:18:31,919 basehttp "GET /api/v1/agents/ HTTP/1.1" 200 30
+INFO 2026-02-17 13:18:43,631 basehttp "GET /admin/web_app/agent/ HTTP/1.1" 200 13497
+INFO 2026-02-17 13:18:43,673 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:18:45,734 basehttp "GET /admin/web_app/agent/add/ HTTP/1.1" 200 20234
+INFO 2026-02-17 13:18:45,774 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:18:49,530 basehttp "GET /admin/web_app/user/add/?_to_field=id&_popup=1 HTTP/1.1" 200 9514
+INFO 2026-02-17 13:18:49,564 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:18:49,580 basehttp "GET /static/admin/css/unusable_password_field.css HTTP/1.1" 200 663
+INFO 2026-02-17 13:18:49,617 basehttp "GET /static/admin/js/unusable_password_field.js HTTP/1.1" 200 1480
+INFO 2026-02-17 13:19:29,002 basehttp "POST /admin/web_app/user/add/?_to_field=id&_popup=1 HTTP/1.1" 200 9917
+INFO 2026-02-17 13:19:29,026 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:19:46,555 basehttp "POST /admin/web_app/user/add/?_to_field=id&_popup=1 HTTP/1.1" 200 382
+INFO 2026-02-17 13:19:46,599 basehttp "GET /static/admin/js/popup_response.js HTTP/1.1" 200 532
+INFO 2026-02-17 13:20:13,658 basehttp "POST /admin/web_app/agent/add/ HTTP/1.1" 302 0
+INFO 2026-02-17 13:20:13,701 basehttp "GET /admin/web_app/agent/ HTTP/1.1" 200 16640
+INFO 2026-02-17 13:20:13,740 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:20:19,553 basehttp "GET /admin/web_app/agent/aa290af3-f9d5-4874-a473-751cf24b9588/change/ HTTP/1.1" 200 20765
+INFO 2026-02-17 13:20:19,585 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 13:20:48,481 basehttp "GET /api/v1/agents/ HTTP/1.1" 200 647
+INFO 2026-02-17 13:27:32,576 basehttp "GET /api/v1/agents/ HTTP/1.1" 200 647
+INFO 2026-02-17 13:27:32,605 basehttp "GET /api/v1/agents/ HTTP/1.1" 200 647
+INFO 2026-02-17 13:27:49,269 basehttp "GET /api/v1/agents/ HTTP/1.1" 200 647
+INFO 2026-02-17 13:27:49,293 basehttp "GET /api/v1/agents/ HTTP/1.1" 200 647
+INFO 2026-02-17 13:28:15,130 basehttp "OPTIONS /api/v1/transactions/deposit/ HTTP/1.1" 200 0
+INFO 2026-02-17 13:28:15,577 basehttp "POST /api/v1/transactions/deposit/ HTTP/1.1" 201 601
+INFO 2026-02-17 13:28:22,336 basehttp "GET /api/v1/transactions/?page=1&page_size=15 HTTP/1.1" 200 1228
+INFO 2026-02-17 13:28:22,362 basehttp "GET /api/v1/transactions/?page=1&page_size=15 HTTP/1.1" 200 1228
+INFO 2026-02-17 13:32:04,586 basehttp "GET /api/v1/transactions/?page=1&page_size=15 HTTP/1.1" 200 1228
+INFO 2026-02-17 13:32:04,612 basehttp "GET /api/v1/transactions/?page=1&page_size=15 HTTP/1.1" 200 1228
+INFO 2026-02-17 13:32:10,247 basehttp "OPTIONS /api/v1/transactions/6a9e3415-dc23-4a17-a4af-d93fc9c5b67a/ HTTP/1.1" 200 0
+INFO 2026-02-17 13:32:10,250 basehttp "OPTIONS /api/v1/transactions/6a9e3415-dc23-4a17-a4af-d93fc9c5b67a/ HTTP/1.1" 200 0
+INFO 2026-02-17 13:32:10,268 basehttp "GET /api/v1/transactions/6a9e3415-dc23-4a17-a4af-d93fc9c5b67a/ HTTP/1.1" 200 570
+INFO 2026-02-17 13:32:10,300 basehttp "GET /api/v1/transactions/6a9e3415-dc23-4a17-a4af-d93fc9c5b67a/ HTTP/1.1" 200 570
+INFO 2026-02-17 13:32:15,589 basehttp "GET /api/v1/transactions/?page=1&page_size=15 HTTP/1.1" 200 1228
+INFO 2026-02-17 13:32:15,616 basehttp "GET /api/v1/transactions/?page=1&page_size=15 HTTP/1.1" 200 1228
+INFO 2026-02-17 13:32:17,963 basehttp "GET /api/v1/agents/ HTTP/1.1" 200 647
+INFO 2026-02-17 13:32:17,989 basehttp "GET /api/v1/agents/ HTTP/1.1" 200 647
+INFO 2026-02-17 13:32:23,657 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 1206
+INFO 2026-02-17 13:32:23,660 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 191
+INFO 2026-02-17 13:32:23,669 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 1206
+INFO 2026-02-17 13:32:23,679 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 191
+INFO 2026-02-17 13:32:27,231 basehttp "OPTIONS /api/v1/wallets/my-wallet/ HTTP/1.1" 200 0
+INFO 2026-02-17 13:32:27,231 basehttp "OPTIONS /api/v1/wallets/my-wallet/ HTTP/1.1" 200 0
+INFO 2026-02-17 13:32:27,249 basehttp "GET /api/v1/wallets/my-wallet/ HTTP/1.1" 200 654
+INFO 2026-02-17 13:32:27,276 basehttp "GET /api/v1/wallets/my-wallet/ HTTP/1.1" 200 654
+INFO 2026-02-17 13:34:51,957 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 1206
+INFO 2026-02-17 13:34:51,959 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 191
+INFO 2026-02-17 13:34:51,970 basehttp "GET /api/v1/transactions/recent/ HTTP/1.1" 200 1206
+INFO 2026-02-17 13:34:51,978 basehttp "GET /api/v1/transactions/statistics/ HTTP/1.1" 200 191
