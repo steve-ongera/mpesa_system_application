@@ -12,6 +12,8 @@ import Spinner from '../../components/common/Spinner';
 import { transactionAPI, agentAPI } from '../../services/api';
 import { useAuthStore, useTransactionStore } from '../../store';
 import toast from 'react-hot-toast';
+import './deposit.css'; // Import the CSS file
+
 
 const fmt = (v) =>
   new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' }).format(parseFloat(v) || 0);
@@ -20,22 +22,20 @@ const fmt = (v) =>
 const AgentOption = ({ agent, selected, onSelect }) => (
   <div
     onClick={() => onSelect(agent)}
-    className={`flex items-center gap-3 p-4 rounded-xl cursor-pointer border-2 transition-all
-      ${selected ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-gray-300 bg-white'}`}
+    className={`agent-option ${selected ? 'selected' : ''}`}
   >
-    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg
-      ${selected ? 'bg-green-200 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+    <div className={`agent-avatar ${selected ? 'selected' : 'default'}`}>
       {agent.store_name?.[0]?.toUpperCase()}
     </div>
-    <div className="flex-1 min-w-0">
-      <p className="font-semibold text-sm text-gray-900 truncate">{agent.store_name}</p>
-      <div className="flex items-center gap-1 mt-0.5">
-        <MapPin size={11} className="text-gray-400 flex-shrink-0" />
-        <p className="text-xs text-gray-400 truncate">{agent.location}</p>
+    <div className="agent-info">
+      <p className="agent-name">{agent.store_name}</p>
+      <div className="agent-location">
+        <MapPin size={11} className="agent-location-icon" />
+        <p className="agent-location-text">{agent.location}</p>
       </div>
     </div>
     {selected && (
-      <CheckCircle size={20} className="text-green-500 flex-shrink-0" />
+      <CheckCircle size={20} className="agent-check-icon" />
     )}
   </div>
 );
@@ -117,33 +117,33 @@ const Deposit = () => {
   /* ─── Success ─────────────────────────────────────── */
   if (success) {
     return (
-      <div className="max-w-md mx-auto py-10 text-center animate-fadeInUp">
-        <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle className="text-green-500" size={52} />
+      <div className="success-screen">
+        <div className="success-icon-wrapper">
+          <CheckCircle />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Deposit Successful!</h1>
-        <p className="text-gray-500 mb-8">{fmt(amount)} added to your account</p>
+        <h1 className="success-title">Deposit Successful!</h1>
+        <p className="success-subtitle">{fmt(amount)} added to your account</p>
 
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-left space-y-3 mb-8">
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Transaction Code</span>
-            <span className="font-mono font-bold">{success.transaction_code}</span>
+        <div className="success-details">
+          <div className="success-detail-row">
+            <span className="success-detail-label">Transaction Code</span>
+            <span className="success-detail-code">{success.transaction_code}</span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Amount Deposited</span>
-            <span className="font-semibold text-green-600">{fmt(amount)}</span>
+          <div className="success-detail-row">
+            <span className="success-detail-label">Amount Deposited</span>
+            <span className="success-detail-amount">{fmt(amount)}</span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Agent</span>
-            <span className="font-medium">{selectedAgent?.store_name}</span>
+          <div className="success-detail-row">
+            <span className="success-detail-label">Agent</span>
+            <span className="success-detail-agent">{selectedAgent?.store_name}</span>
           </div>
-          <div className="flex justify-between text-sm font-bold border-t pt-3">
+          <div className="success-total-row">
             <span>New Balance</span>
-            <span className="text-green-600">{fmt(user?.account_balance)}</span>
+            <span className="success-balance">{fmt(user?.account_balance)}</span>
           </div>
         </div>
 
-        <div className="flex gap-3">
+        <div className="success-actions">
           <Button variant="outline" fullWidth onClick={() => navigate('/transactions')}>View History</Button>
           <Button variant="primary" fullWidth onClick={() => navigate('/dashboard')}>Done</Button>
         </div>
@@ -153,24 +153,29 @@ const Deposit = () => {
 
   /* ─── Form ────────────────────────────────────────── */
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="flex items-center gap-3 mb-6">
-        <button onClick={() => navigate('/dashboard')} className="p-2 rounded-lg hover:bg-gray-100">
-          <ArrowLeft size={22} className="text-gray-600" />
+    <div className="deposit-container">
+      <div className="deposit-header">
+        <button onClick={() => navigate('/dashboard')} className="deposit-back-btn">
+          <ArrowLeft size={22} />
         </button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Deposit Money</h1>
-          <p className="text-gray-500 mt-0.5">Add funds via an M-Pesa agent</p>
+          <h1 className="deposit-title">Deposit Money</h1>
+          <p className="deposit-subtitle">Add funds via an M-Pesa agent</p>
         </div>
       </div>
 
-      {apiError && <Alert type="error" message={apiError} onClose={() => setApiError('')} className="mb-5" />}
+      {apiError && (
+        <div className="alert-wrapper">
+          <Alert type="error" message={apiError} onClose={() => setApiError('')} />
+        </div>
+      )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <div className="deposit-grid">
         {/* Left: Amount + Agent */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="space-y-6">
           {/* Amount card */}
-          <Card title="Enter Amount">
+          <div className="deposit-card">
+            <h3 className="card-title">Enter Amount</h3>
             <Input
               label="Amount (KES)"
               type="number"
@@ -184,44 +189,42 @@ const Deposit = () => {
             />
 
             {/* Quick amount buttons */}
-            <div className="mt-3">
-              <p className="text-xs text-gray-400 mb-2">Quick select</p>
-              <div className="grid grid-cols-4 gap-2">
+            <div className="quick-amount-section">
+              <p className="quick-amount-label">Quick select</p>
+              <div className="quick-amount-grid">
                 {[500, 1000, 2500, 5000].map((q) => (
                   <button
                     key={q}
                     onClick={() => { setAmount(String(q)); setAmountError(''); }}
-                    className={`py-2 text-sm font-medium rounded-lg border transition-colors
-                      ${amount === String(q)
-                        ? 'border-green-500 bg-green-50 text-green-700'
-                        : 'border-gray-200 hover:border-gray-300 text-gray-600'}`}
+                    className={`quick-amount-btn ${amount === String(q) ? 'active' : ''}`}
                   >
                     {q >= 1000 ? `${q / 1000}K` : q}
                   </button>
                 ))}
               </div>
             </div>
-          </Card>
+          </div>
 
           {/* Agent picker */}
-          <Card title="Select Agent" subtitle="Find the agent you're depositing at">
-            <div className="mb-3">
-              <div className="relative">
-                <Store size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  value={agentSearch}
-                  onChange={(e) => setAgentSearch(e.target.value)}
-                  placeholder="Search agents by name or location…"
-                  className="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
-                />
-              </div>
+          <div className="deposit-card">
+            <h3 className="card-title">Select Agent</h3>
+            <p className="card-subtitle">Find the agent you're depositing at</p>
+            
+            <div className="agent-search-wrapper">
+              <Store size={16} className="agent-search-icon" />
+              <input
+                type="text"
+                value={agentSearch}
+                onChange={(e) => setAgentSearch(e.target.value)}
+                placeholder="Search agents by name or location…"
+                className="agent-search-input"
+              />
             </div>
 
             {agentsLoading ? (
-              <div className="flex justify-center py-8"><Spinner size="md" text="Loading agents…" /></div>
+              <div className="loading-container"><Spinner size="md" text="Loading agents…" /></div>
             ) : filteredAgents.length > 0 ? (
-              <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+              <div className="agent-list">
                 {filteredAgents.map((agent) => (
                   <AgentOption
                     key={agent.id}
@@ -232,55 +235,58 @@ const Deposit = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-400">
-                <MapPin size={28} className="mx-auto mb-2 opacity-40" />
-                <p className="text-sm">No agents found</p>
+              <div className="empty-state">
+                <MapPin size={28} className="empty-state-icon" />
+                <p className="empty-state-text">No agents found</p>
               </div>
             )}
 
             <button
               onClick={fetchAgents}
-              className="flex items-center gap-1.5 mt-3 text-xs text-green-600 hover:text-green-700 font-medium"
+              className="refresh-agents-btn"
             >
               <RefreshCw size={13} /> Refresh list
             </button>
-          </Card>
+          </div>
         </div>
 
         {/* Right: Summary */}
-        <div className="lg:col-span-2 space-y-4">
+        <div className="space-y-4">
           {/* Summary */}
-          <Card title="Deposit Summary">
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Current balance</span>
-                <span className="font-medium">{fmt(user?.account_balance)}</span>
+          <div className="summary-card">
+            <h3 className="card-title">Deposit Summary</h3>
+            <div className="summary-content">
+              <div className="summary-row">
+                <span className="summary-label">Current balance</span>
+                <span className="summary-value">{fmt(user?.account_balance)}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Amount to deposit</span>
-                <span className={`font-semibold ${amount ? 'text-green-600' : 'text-gray-400'}`}>
+              <div className="summary-row">
+                <span className="summary-label">Amount to deposit</span>
+                <span className={`summary-value ${amount ? 'highlight' : 'muted'}`}>
                   {amount ? fmt(amount) : '—'}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Agent</span>
-                <span className="font-medium text-right max-w-[140px] truncate">
+              <div className="summary-row">
+                <span className="summary-label">Agent</span>
+                <span className="agent-summary-value">
                   {selectedAgent ? selectedAgent.store_name : '—'}
                 </span>
               </div>
-              <div className="flex justify-between font-bold text-base border-t pt-3">
-                <span>Balance after</span>
-                <span className="text-green-600">
+              <div className="summary-total">
+                <span className="summary-total-label">Balance after</span>
+                <span className="summary-total-value">
                   {amount ? fmt(parseFloat(user?.account_balance || 0) + parseFloat(amount)) : '—'}
                 </span>
               </div>
             </div>
-          </Card>
+          </div>
 
           {/* Info */}
-          <div className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs text-blue-700">
-            <Info size={14} className="flex-shrink-0 mt-0.5" />
-            <p>Give the exact cash amount to the agent. Deposits are instant and <strong>free</strong> of charge.</p>
+          <div className="info-box">
+            <Info size={14} className="info-box-icon" />
+            <p className="info-box-text">
+              Give the exact cash amount to the agent. Deposits are instant and <strong>free</strong> of charge.
+            </p>
           </div>
 
           <Button

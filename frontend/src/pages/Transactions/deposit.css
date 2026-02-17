@@ -1,0 +1,660 @@
+/* deposit.css - Deposit Component Styles with Safaricom/M-Pesa Theme */
+
+/* Import the main theme */
+@import '../../styles/safaricom-mpesa-theme.css';
+
+/* Main Container */
+.deposit-container {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+/* Header Section */
+.deposit-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.deposit-back-btn {
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--safaricom-text-light);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deposit-back-btn:hover {
+  background: var(--safaricom-green-light);
+  color: var(--safaricom-green);
+  transform: scale(1.05);
+}
+
+.deposit-back-btn:active {
+  transform: scale(0.95);
+}
+
+.deposit-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--safaricom-text);
+  line-height: 1.2;
+}
+
+.deposit-subtitle {
+  color: var(--safaricom-text-light);
+  font-size: 0.875rem;
+  margin-top: 0.125rem;
+}
+
+/* Grid Layout */
+.deposit-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .deposit-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cards */
+.deposit-card {
+  background: white;
+  border-radius: 1.5rem;
+  border: 1px solid var(--safaricom-border);
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+}
+
+.deposit-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--safaricom-text);
+  margin-bottom: 0.25rem;
+}
+
+.card-subtitle {
+  font-size: 0.875rem;
+  color: var(--safaricom-text-light);
+  margin-bottom: 1rem;
+}
+
+/* Quick Amount Buttons */
+.quick-amount-section {
+  margin-top: 0.75rem;
+}
+
+.quick-amount-label {
+  font-size: 0.75rem;
+  color: var(--safaricom-text-lighter);
+  margin-bottom: 0.5rem;
+}
+
+.quick-amount-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.quick-amount-btn {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.75rem;
+  border: 1px solid var(--safaricom-border);
+  background: white;
+  color: var(--safaricom-text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-amount-btn:hover {
+  border-color: var(--safaricom-green);
+  background: var(--safaricom-green-light);
+  color: var(--safaricom-green);
+  transform: translateY(-1px);
+}
+
+.quick-amount-btn:active {
+  transform: translateY(0);
+}
+
+.quick-amount-btn.active {
+  border-color: var(--safaricom-green);
+  background: var(--safaricom-green-light);
+  color: var(--safaricom-green);
+  font-weight: 600;
+}
+
+/* Agent Search */
+.agent-search-wrapper {
+  position: relative;
+  margin-bottom: 0.75rem;
+}
+
+.agent-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--safaricom-text-lighter);
+  width: 1rem;
+  height: 1rem;
+}
+
+.agent-search-input {
+  width: 100%;
+  padding: 0.625rem 1rem 0.625rem 2.25rem;
+  border: 1px solid var(--safaricom-border);
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.agent-search-input:focus {
+  border-color: var(--safaricom-green);
+  box-shadow: 0 0 0 3px rgba(30, 179, 30, 0.1);
+}
+
+.agent-search-input::placeholder {
+  color: var(--safaricom-text-lighter);
+}
+
+/* Agent List */
+.agent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 18rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* Custom Scrollbar for Agent List */
+.agent-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.agent-list::-webkit-scrollbar-track {
+  background: var(--safaricom-border);
+  border-radius: 4px;
+}
+
+.agent-list::-webkit-scrollbar-thumb {
+  background: var(--safaricom-green);
+  border-radius: 4px;
+}
+
+.agent-list::-webkit-scrollbar-thumb:hover {
+  background: var(--safaricom-green-dark);
+}
+
+/* Agent Option */
+.agent-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  border: 2px solid transparent;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.agent-option:hover {
+  border-color: var(--safaricom-border);
+  background: var(--safaricom-background);
+  transform: translateX(2px);
+}
+
+.agent-option.selected {
+  border-color: var(--safaricom-green);
+  background: var(--safaricom-green-light);
+}
+
+.agent-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.125rem;
+  transition: all 0.2s ease;
+}
+
+.agent-avatar.default {
+  background: var(--safaricom-background);
+  color: var(--safaricom-text-lighter);
+}
+
+.agent-avatar.selected {
+  background: rgba(30, 179, 30, 0.2);
+  color: var(--safaricom-green);
+}
+
+.agent-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.agent-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--safaricom-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agent-location {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.125rem;
+}
+
+.agent-location-icon {
+  color: var(--safaricom-text-lighter);
+  width: 0.6875rem;
+  height: 0.6875rem;
+  flex-shrink: 0;
+}
+
+.agent-location-text {
+  font-size: 0.75rem;
+  color: var(--safaricom-text-lighter);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agent-check-icon {
+  color: var(--safaricom-green);
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  animation: scaleIn 0.2s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Refresh Button */
+.refresh-agents-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--safaricom-green);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refresh-agents-btn:hover {
+  color: var(--safaricom-green-dark);
+  transform: translateX(2px);
+}
+
+.refresh-agents-btn:active {
+  transform: translateX(0);
+}
+
+.refresh-agents-btn svg {
+  transition: transform 0.5s ease;
+}
+
+.refresh-agents-btn:hover svg {
+  transform: rotate(180deg);
+}
+
+/* Summary Card */
+.summary-card {
+  background: white;
+  border-radius: 1.5rem;
+  border: 1px solid var(--safaricom-border);
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-label {
+  color: var(--safaricom-text-light);
+}
+
+.summary-value {
+  font-weight: 500;
+  color: var(--safaricom-text);
+}
+
+.summary-value.highlight {
+  color: var(--safaricom-green);
+  font-weight: 600;
+}
+
+.summary-value.muted {
+  color: var(--safaricom-text-lighter);
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1rem;
+  padding-top: 0.75rem;
+  margin-top: 0.25rem;
+  border-top: 1px solid var(--safaricom-border);
+}
+
+.summary-total-label {
+  color: var(--safaricom-text);
+}
+
+.summary-total-value {
+  color: var(--safaricom-green);
+}
+
+.agent-summary-value {
+  font-weight: 500;
+  text-align: right;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--safaricom-text);
+}
+
+/* Info Box */
+.info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  color: #1e40af;
+}
+
+.info-box-icon {
+  color: #2563eb;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.info-box-text {
+  line-height: 1.4;
+}
+
+.info-box-text strong {
+  font-weight: 700;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--safaricom-text-lighter);
+}
+
+.empty-state-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: 0 auto 0.5rem;
+  opacity: 0.4;
+}
+
+.empty-state-text {
+  font-size: 0.875rem;
+}
+
+/* Success Screen */
+.success-screen {
+  max-width: 28rem;
+  margin: 2.5rem auto 0;
+  text-align: center;
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-icon-wrapper {
+  width: 6rem;
+  height: 6rem;
+  background: var(--safaricom-green-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.success-icon-wrapper svg {
+  color: var(--safaricom-green);
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.success-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--safaricom-text);
+  margin-bottom: 0.5rem;
+}
+
+.success-subtitle {
+  color: var(--safaricom-text-light);
+  margin-bottom: 2rem;
+}
+
+.success-details {
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid var(--safaricom-border);
+  padding: 1.5rem;
+  text-align: left;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.success-detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  padding: 0.5rem 0;
+}
+
+.success-detail-row:not(:last-child) {
+  border-bottom: 1px solid var(--safaricom-border);
+}
+
+.success-detail-label {
+  color: var(--safaricom-text-light);
+}
+
+.success-detail-value {
+  font-weight: 500;
+  color: var(--safaricom-text);
+}
+
+.success-detail-code {
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--safaricom-text);
+}
+
+.success-detail-amount {
+  color: var(--safaricom-green);
+  font-weight: 600;
+}
+
+.success-detail-agent {
+  font-weight: 500;
+  color: var(--safaricom-text);
+}
+
+.success-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  padding-top: 0.75rem;
+  margin-top: 0.25rem;
+  border-top: 1px solid var(--safaricom-border);
+}
+
+.success-balance {
+  color: var(--safaricom-green);
+}
+
+.success-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Alert */
+.alert-wrapper {
+  margin-bottom: 1.25rem;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+/* Helper Text */
+.helper-text {
+  font-size: 0.75rem;
+  color: var(--safaricom-text-lighter);
+  margin-top: 0.25rem;
+  padding-left: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .deposit-title {
+    font-size: 1.5rem;
+  }
+  
+  .deposit-card,
+  .summary-card {
+    padding: 1.25rem;
+  }
+  
+  .quick-amount-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .success-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .deposit-container {
+    padding: 0.5rem;
+  }
+  
+  .deposit-header {
+    margin-bottom: 1rem;
+  }
+  
+  .quick-amount-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .success-actions {
+    flex-direction: column;
+  }
+  
+  .agent-option {
+    padding: 0.75rem;
+  }
+}
+
+/* Animation for amount selection */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.quick-amount-btn.active {
+  animation: pulse 0.3s ease;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .agent-option,
+  .quick-amount-btn,
+  .refresh-agents-btn,
+  .success-screen {
+    animation: none;
+    transition: none;
+  }
+  
+  .agent-check-icon {
+    animation: none;
+  }
+}

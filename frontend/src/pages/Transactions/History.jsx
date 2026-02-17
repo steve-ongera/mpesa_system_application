@@ -12,6 +12,8 @@ import Spinner from '../../components/common/Spinner';
 import Alert from '../../components/common/Alert';
 import { transactionAPI } from '../../services/api';
 import toast from 'react-hot-toast';
+import './history.css'; // Import the CSS file
+
 
 /* ─── helpers ─────────────────────────────────────────── */
 const fmt = (v) =>
@@ -26,17 +28,17 @@ const formatTime = (d) =>
 const isDebit = (type) => ['SEND', 'WITHDRAW'].includes(type);
 
 const TYPE_CONFIG = {
-  SEND:     { Icon: ArrowUpRight,    bg: 'bg-red-100',    color: 'text-red-500'    },
-  RECEIVE:  { Icon: ArrowDownLeft,   bg: 'bg-green-100',  color: 'text-green-500'  },
-  DEPOSIT:  { Icon: ArrowDownToLine, bg: 'bg-blue-100',   color: 'text-blue-500'   },
-  WITHDRAW: { Icon: ArrowUpFromLine, bg: 'bg-orange-100', color: 'text-orange-500' },
+  SEND:     { Icon: ArrowUpRight,    bg: 'icon-bg-send',    color: 'icon-color-send'    },
+  RECEIVE:  { Icon: ArrowDownLeft,   bg: 'icon-bg-receive',  color: 'icon-color-receive'  },
+  DEPOSIT:  { Icon: ArrowDownToLine, bg: 'icon-bg-deposit', color: 'icon-color-deposit' },
+  WITHDRAW: { Icon: ArrowUpFromLine, bg: 'icon-bg-withdraw', color: 'icon-color-withdraw' },
 };
 
 const STATUS_VARIANT = {
-  COMPLETED: 'success',
-  PENDING:   'warning',
-  FAILED:    'error',
-  REVERSED:  'default',
+  COMPLETED: 'badge-success',
+  PENDING:   'badge-warning',
+  FAILED:    'badge-error',
+  REVERSED:  'badge-default',
 };
 
 const DEFAULT_FILTERS = {
@@ -55,20 +57,20 @@ const TxnRow = ({ txn, onClick }) => {
 
   return (
     <div
-      className="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 cursor-pointer transition-colors"
+      className="transaction-row"
       onClick={onClick}
     >
-      <div className={`w-11 h-11 rounded-full ${bg} flex items-center justify-center flex-shrink-0`}>
-        <Icon size={20} className={color} />
+      <div className={`transaction-icon-wrapper ${bg}`}>
+        <Icon size={20} className={`transaction-icon ${color}`} />
       </div>
 
-      <div className="flex-1 min-w-0">
-        <p className="font-semibold text-gray-900 text-sm">
+      <div className="transaction-details">
+        <p className="transaction-type">
           {txn.transaction_type.charAt(0) + txn.transaction_type.slice(1).toLowerCase().replace('_', ' ')}
         </p>
-        <p className="text-xs text-gray-400 mt-0.5 truncate">{txn.transaction_code}</p>
+        <p className="transaction-code">{txn.transaction_code}</p>
         {(txn.sender_name || txn.receiver_name) && (
-          <p className="text-xs text-gray-500 mt-0.5 truncate">
+          <p className="transaction-party">
             {debit
               ? `To: ${txn.receiver_name || txn.receiver_phone || '—'}`
               : `From: ${txn.sender_name || txn.sender_phone || '—'}`}
@@ -76,14 +78,16 @@ const TxnRow = ({ txn, onClick }) => {
         )}
       </div>
 
-      <div className="text-right flex-shrink-0">
-        <p className={`font-bold text-sm ${debit ? 'text-red-600' : 'text-green-600'}`}>
+      <div className="transaction-right">
+        <p className={`transaction-amount ${debit ? 'amount-debit' : 'amount-credit'}`}>
           {debit ? '−' : '+'}{fmt(txn.amount)}
         </p>
-        <p className="text-xs text-gray-400 mt-0.5">{formatTime(txn.created_at)}</p>
-        <Badge variant={STATUS_VARIANT[txn.status] || 'default'} size="sm" className="mt-1">
-          {txn.status}
-        </Badge>
+        <p className="transaction-time">{formatTime(txn.created_at)}</p>
+        <div className="transaction-badge">
+          <Badge variant={STATUS_VARIANT[txn.status] || 'badge-default'} size="sm">
+            {txn.status}
+          </Badge>
+        </div>
       </div>
     </div>
   );
@@ -91,8 +95,8 @@ const TxnRow = ({ txn, onClick }) => {
 
 /* ─── Date group header ──────────────────────────────── */
 const DateHeader = ({ label }) => (
-  <div className="px-5 py-2 bg-gray-50 border-b border-gray-100">
-    <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{label}</span>
+  <div className="date-header">
+    <span className="date-label">{label}</span>
   </div>
 );
 
@@ -176,20 +180,19 @@ const History = () => {
     ([k, v]) => v && v !== 'ALL' && v !== ''
   );
 
-  const inputClass =
-    'w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500';
+  const inputClass = 'filter-input';
 
   return (
-    <div>
+    <div className="history-container">
       {/* Header */}
-      <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
+      <div className="history-header">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Transaction History</h1>
-          <p className="text-gray-500 mt-1">
+          <h1 className="history-title">Transaction History</h1>
+          <p className="history-subtitle">
             {totalCount > 0 ? `${totalCount} transaction${totalCount !== 1 ? 's' : ''}` : 'All your transactions'}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="history-actions">
           <Button
             variant="ghost"
             size="sm"
@@ -204,7 +207,7 @@ const History = () => {
             icon={<Filter size={15} />}
             onClick={() => setShowFilters(!showFilters)}
           >
-            Filters {hasActiveFilters && '•'}
+            Filters {hasActiveFilters && <span className="active-filter-dot"></span>}
           </Button>
           <Button variant="outline" size="sm" icon={<Download size={15} />}>
             Export
@@ -214,10 +217,10 @@ const History = () => {
 
       {/* Filter panel */}
       {showFilters && (
-        <Card className="mb-5 animate-fadeInDown">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div className="filter-panel">
+          <div className="filter-grid">
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Type</label>
+              <label className="filter-label">Type</label>
               <select
                 value={filters.transaction_type}
                 onChange={(e) => setFilters((p) => ({ ...p, transaction_type: e.target.value }))}
@@ -231,7 +234,7 @@ const History = () => {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Status</label>
+              <label className="filter-label">Status</label>
               <select
                 value={filters.status}
                 onChange={(e) => setFilters((p) => ({ ...p, status: e.target.value }))}
@@ -245,7 +248,7 @@ const History = () => {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">From Date</label>
+              <label className="filter-label">From Date</label>
               <input
                 type="date"
                 value={filters.start_date}
@@ -254,7 +257,7 @@ const History = () => {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">To Date</label>
+              <label className="filter-label">To Date</label>
               <input
                 type="date"
                 value={filters.end_date}
@@ -263,23 +266,27 @@ const History = () => {
               />
             </div>
           </div>
-          <div className="flex justify-end gap-3">
+          <div className="filter-actions">
             <Button variant="ghost" size="sm" onClick={resetFilters}>Reset</Button>
             <Button variant="primary" size="sm" onClick={applyFilters}>Apply Filters</Button>
           </div>
-        </Card>
+        </div>
       )}
 
-      {error && <Alert type="error" message={error} onClose={() => setError('')} className="mb-5" />}
+      {error && (
+        <div className="alert-wrapper">
+          <Alert type="error" message={error} onClose={() => setError('')} />
+        </div>
+      )}
 
       {/* Transaction list */}
-      <Card padding="none">
+      <div className="transactions-card">
         {loading ? (
-          <div className="flex justify-center py-16">
+          <div className="loading-container">
             <Spinner size="lg" text="Loading transactions…" />
           </div>
         ) : Object.keys(grouped).length > 0 ? (
-          <div className="divide-y divide-gray-100">
+          <div>
             {Object.entries(grouped).map(([dateLabel, txns]) => (
               <React.Fragment key={dateLabel}>
                 <DateHeader label={dateLabel} />
@@ -294,12 +301,12 @@ const History = () => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 text-center px-4">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-              <Search size={28} className="text-gray-300" />
+          <div className="empty-state">
+            <div className="empty-icon-wrapper">
+              <Search size={28} className="empty-icon" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-1">No Transactions Found</h3>
-            <p className="text-sm text-gray-400 mb-5">
+            <h3 className="empty-title">No Transactions Found</h3>
+            <p className="empty-text">
               {hasActiveFilters ? 'Try adjusting your filters.' : 'You havent made any transactions yet.'}
             </p>
             {hasActiveFilters ? (
@@ -311,32 +318,31 @@ const History = () => {
             )}
           </div>
         )}
-      </Card>
+      </div>
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-5">
-          <p className="text-sm text-gray-500">
+        <div className="pagination-container">
+          <p className="pagination-info">
             Page {page} of {totalPages} · {totalCount} total
           </p>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              icon={<ChevronLeft size={16} />}
+          <div className="pagination-controls">
+            <button
+              className="pagination-btn"
               disabled={page === 1}
               onClick={() => fetch(activeFilters, page - 1)}
             >
+              <ChevronLeft size={16} />
               Prev
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
+            </button>
+            <button
+              className="pagination-btn"
               disabled={page === totalPages}
               onClick={() => fetch(activeFilters, page + 1)}
             >
-              Next <ChevronRight size={16} className="ml-1" />
-            </Button>
+              Next
+              <ChevronRight size={16} />
+            </button>
           </div>
         </div>
       )}
