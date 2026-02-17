@@ -13,9 +13,12 @@ import {
   Settings,
   X
 } from 'lucide-react';
+import { useAuthStore } from '../../store';
+import './sidebar.css'; // Import the CSS file
 
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
+  const { user } = useAuthStore();
 
   const menuItems = [
     { 
@@ -56,7 +59,8 @@ const Sidebar = ({ isOpen, onClose }) => {
     { 
       name: 'Notifications', 
       path: '/notifications', 
-      icon: Bell 
+      icon: Bell,
+      badge: 3 // Example notification count
     },
     { 
       name: 'Profile', 
@@ -72,66 +76,86 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const isActive = (path) => location.pathname === path;
 
+  // Get user initials for avatar
+  const getUserInitials = () => {
+    if (user?.first_name && user?.last_name) {
+      return `${user.first_name[0]}${user.last_name[0]}`.toUpperCase();
+    }
+    return 'U';
+  };
+
   return (
     <>
       {/* Overlay for mobile */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="sidebar-overlay"
           onClick={onClose}
         />
       )}
 
       {/* Sidebar */}
       <aside 
-        className={`
-          fixed top-0 left-0 h-full w-64 bg-white border-r border-gray-200 z-50
-          transform transition-transform duration-300 ease-in-out
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-          lg:translate-x-0 lg:static
-        `}
+        className={`sidebar ${!isOpen ? 'closed' : ''}`}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 lg:hidden">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold">M</span>
+        {/* Header - Mobile Only */}
+        <div className="sidebar-header">
+          <div className="sidebar-brand">
+            <div className="sidebar-logo">
+              <span>M</span>
             </div>
-            <span className="font-bold text-gray-900">Menu</span>
+            <span className="sidebar-title">Menu</span>
           </div>
           <button 
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100"
+            className="sidebar-close"
+            aria-label="Close menu"
           >
             <X size={20} />
           </button>
         </div>
 
         {/* Navigation */}
-        <nav className="p-4 space-y-1 overflow-y-auto h-full pb-20">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const active = isActive(item.path);
+        <nav className="sidebar-nav">
+          <div className="sidebar-menu">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(item.path);
 
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={onClose}
-                className={`
-                  flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200
-                  ${active 
-                    ? 'bg-green-50 text-green-600 font-medium' 
-                    : 'text-gray-700 hover:bg-gray-100'
-                  }
-                `}
-              >
-                <Icon size={20} />
-                <span>{item.name}</span>
-              </Link>
-            );
-          })}
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={onClose}
+                  className={`sidebar-menu-item ${active ? 'active' : ''}`}
+                >
+                  <Icon className="sidebar-icon" />
+                  <span className="sidebar-text">{item.name}</span>
+                  {item.badge && (
+                    <span className="sidebar-badge">{item.badge}</span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
         </nav>
+
+        {/* Footer with User Info */}
+        <div className="sidebar-footer">
+          <div className="sidebar-user-info">
+            <div className="sidebar-user-avatar">
+              <span>{getUserInitials()}</span>
+            </div>
+            <div className="sidebar-user-details">
+              <div className="sidebar-user-name">
+                {user?.first_name || 'User'}
+              </div>
+              <div className="sidebar-user-role">
+                {user?.phone_number || 'Loading...'}
+              </div>
+            </div>
+          </div>
+        </div>
       </aside>
     </>
   );
