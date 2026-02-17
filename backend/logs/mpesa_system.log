@@ -39,3 +39,26 @@ INFO 2026-02-17 08:52:13,394 autoreload Watching for file changes with StatReloa
 INFO 2026-02-17 08:52:16,403 autoreload D:\BACKUP\Complete Projects\mpesa_system_application\backend\web_app\models.py changed, reloading.
 INFO 2026-02-17 08:52:18,148 autoreload Watching for file changes with StatReloader
 INFO 2026-02-17 11:05:59,393 autoreload Watching for file changes with StatReloader
+INFO 2026-02-17 11:06:07,313 basehttp "GET / HTTP/1.1" 200 1024
+INFO 2026-02-17 11:06:08,433 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2026-02-17 11:06:08,766 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4182
+WARNING 2026-02-17 11:06:09,022 log Not Found: /favicon.ico
+WARNING 2026-02-17 11:06:09,023 basehttp "GET /favicon.ico HTTP/1.1" 404 2705
+INFO 2026-02-17 11:06:31,391 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2026-02-17 11:06:31,508 basehttp "GET /admin/ HTTP/1.1" 200 11480
+INFO 2026-02-17 11:06:31,540 basehttp "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+INFO 2026-02-17 11:06:31,551 basehttp "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+INFO 2026-02-17 11:06:36,740 basehttp "GET /admin/web_app/user/ HTTP/1.1" 200 16481
+INFO 2026-02-17 11:06:36,741 basehttp - Broken pipe from ('127.0.0.1', 59821)
+INFO 2026-02-17 11:06:36,848 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 11:06:36,934 basehttp "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+INFO 2026-02-17 11:06:39,857 basehttp "GET /admin/web_app/user/5cca19dd-334c-4641-93fe-c66e0f2b24c7/change/ HTTP/1.1" 200 27054
+INFO 2026-02-17 11:06:39,902 basehttp "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+INFO 2026-02-17 11:06:39,911 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-02-17 11:06:39,948 basehttp "GET /static/admin/js/SelectBox.js HTTP/1.1" 200 4530
+INFO 2026-02-17 11:06:39,953 basehttp "GET /static/admin/js/SelectFilter2.js HTTP/1.1" 200 15845
+INFO 2026-02-17 11:06:39,956 basehttp "GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+INFO 2026-02-17 11:06:40,121 basehttp "GET /static/admin/img/selector-icons.svg HTTP/1.1" 200 3291
+INFO 2026-02-17 11:06:47,671 basehttp "POST /admin/web_app/user/5cca19dd-334c-4641-93fe-c66e0f2b24c7/change/ HTTP/1.1" 302 0
+INFO 2026-02-17 11:06:47,724 basehttp "GET /admin/web_app/user/ HTTP/1.1" 200 16733
+INFO 2026-02-17 11:06:47,771 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342

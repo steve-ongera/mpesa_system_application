@@ -1,146 +1,85 @@
+/**
+ * Central store barrel — import any store from here.
+ *
+ *   import { useAuthStore, useTransactionStore, useUiStore } from '../store';
+ */
+
+export { default as useAuthStore }        from './authStore';
+export { default as useTransactionStore } from './transactionStore';
+export { default as useUiStore }          from './uiStore';
+
+// ─────────────────────────────────────────────────────────────
+// Wallet store  (lightweight — lives here to avoid extra file)
+// ─────────────────────────────────────────────────────────────
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { devtools } from 'zustand/middleware';
 
-// Auth Store
-export const useAuthStore = create(
-  persist(
+export const useWalletStore = create(
+  devtools(
     (set) => ({
-      user: null,
-      accessToken: null,
-      refreshToken: null,
-      isAuthenticated: false,
+      wallet:    null,
+      isLoading: false,
+      error:     null,
 
-      setAuth: (user, tokens) => {
-        localStorage.setItem('access_token', tokens.access);
-        localStorage.setItem('refresh_token', tokens.refresh);
-        set({
-          user,
-          accessToken: tokens.access,
-          refreshToken: tokens.refresh,
-          isAuthenticated: true,
-        });
-      },
+      setWallet:     (wallet)    => set({ wallet }),
+      updateWallet:  (patch)     => set((s) => ({ wallet: s.wallet ? { ...s.wallet, ...patch } : patch })),
+      setLoading:    (isLoading) => set({ isLoading }),
+      setError:      (error)     => set({ error }),
+      clearWallet:   ()          => set({ wallet: null }),
 
-      updateUser: (userData) => {
-        set((state) => ({
-          user: { ...state.user, ...userData },
-        }));
-      },
-
-      logout: () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        localStorage.removeItem('user');
-        set({
-          user: null,
-          accessToken: null,
-          refreshToken: null,
-          isAuthenticated: false,
-        });
-      },
+      getDailyLimit:       () => parseFloat(useWalletStore.getState().wallet?.daily_limit       ?? 0),
+      getTransactionLimit: () => parseFloat(useWalletStore.getState().wallet?.transaction_limit ?? 0),
+      isLocked:            () => useWalletStore.getState().wallet?.is_locked ?? false,
     }),
-    {
-      name: 'auth-storage',
-    }
+    { name: 'WalletStore' }
   )
 );
 
-// Transaction Store
-export const useTransactionStore = create((set) => ({
-  transactions: [],
-  recentTransactions: [],
-  statistics: null,
-  loading: false,
-  error: null,
-
-  setTransactions: (transactions) => set({ transactions }),
-  setRecentTransactions: (recentTransactions) => set({ recentTransactions }),
-  setStatistics: (statistics) => set({ statistics }),
-  setLoading: (loading) => set({ loading }),
-  setError: (error) => set({ error }),
-
-  addTransaction: (transaction) =>
-    set((state) => ({
-      transactions: [transaction, ...state.transactions],
-      recentTransactions: [transaction, ...state.recentTransactions].slice(0, 10),
-    })),
-
-  clearTransactions: () =>
-    set({
-      transactions: [],
-      recentTransactions: [],
-      statistics: null,
-    }),
-}));
-
-// Wallet Store
-export const useWalletStore = create((set) => ({
-  wallet: null,
-  loading: false,
-  error: null,
-
-  setWallet: (wallet) => set({ wallet }),
-  setLoading: (loading) => set({ loading }),
-  setError: (error) => set({ error }),
-
-  updateBalance: (newBalance) =>
-    set((state) => ({
-      wallet: state.wallet ? { ...state.wallet, user: { ...state.wallet.user, account_balance: newBalance } } : null,
-    })),
-}));
-
-// Notification Store
-export const useNotificationStore = create((set) => ({
-  notifications: [],
-  unreadCount: 0,
-  loading: false,
-  error: null,
-
-  setNotifications: (notifications) => set({ notifications }),
-  setUnreadCount: (unreadCount) => set({ unreadCount }),
-  setLoading: (loading) => set({ loading }),
-  setError: (error) => set({ error }),
-
-  addNotification: (notification) =>
-    set((state) => ({
-      notifications: [notification, ...state.notifications],
-      unreadCount: notification.is_read ? state.unreadCount : state.unreadCount + 1,
-    })),
-
-  markAsRead: (notificationId) =>
-    set((state) => ({
-      notifications: state.notifications.map((n) =>
-        n.id === notificationId ? { ...n, is_read: true } : n
-      ),
-      unreadCount: Math.max(0, state.unreadCount - 1),
-    })),
-
-  markAllAsRead: () =>
-    set((state) => ({
-      notifications: state.notifications.map((n) => ({ ...n, is_read: true })),
-      unreadCount: 0,
-    })),
-
-  clearNotifications: () =>
-    set({
+// ─────────────────────────────────────────────────────────────
+// Notification store  (lightweight — lives here to avoid extra file)
+// ─────────────────────────────────────────────────────────────
+export const useNotificationStore = create(
+  devtools(
+    (set, get) => ({
       notifications: [],
-      unreadCount: 0,
+      unreadCount:   0,
+      isLoading:     false,
+
+      setNotifications: (notifications) => {
+        const unread = notifications.filter((n) => !n.is_read).length;
+        set({ notifications, unreadCount: unread });
+      },
+
+      addNotification: (n) =>
+        set((s) => ({
+          notifications: [n, ...s.notifications],
+          unreadCount:   n.is_read ? s.unreadCount : s.unreadCount + 1,
+        })),
+
+      markAsRead: (id) =>
+        set((s) => {
+          const already = s.notifications.find((n) => n.id === id)?.is_read;
+          return {
+            notifications: s.notifications.map((n) =>
+              n.id === id ? { ...n, is_read: true } : n
+            ),
+            unreadCount: already ? s.unreadCount : Math.max(0, s.unreadCount - 1),
+          };
+        }),
+
+      markAllAsRead: () =>
+        set((s) => ({
+          notifications: s.notifications.map((n) => ({ ...n, is_read: true })),
+          unreadCount:   0,
+        })),
+
+      clearNotifications: () => set({ notifications: [], unreadCount: 0 }),
+
+      setUnreadCount: (unreadCount) => set({ unreadCount }),
+      setLoading:     (isLoading)   => set({ isLoading }),
+
+      getUnread: () => get().notifications.filter((n) => !n.is_read),
     }),
-}));
-
-// UI Store
-export const useUIStore = create((set) => ({
-  sidebarOpen: false,
-  modalOpen: false,
-  modalContent: null,
-  theme: 'light',
-
-  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
-  setSidebarOpen: (open) => set({ sidebarOpen: open }),
-
-  openModal: (content) => set({ modalOpen: true, modalContent: content }),
-  closeModal: () => set({ modalOpen: false, modalContent: null }),
-
-  setTheme: (theme) => set({ theme }),
-  toggleTheme: () => set((state) => ({ theme: state.theme === 'light' ? 'dark' : 'light' })),
-}));
+    { name: 'NotificationStore' }
+  )
+);

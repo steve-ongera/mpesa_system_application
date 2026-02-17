@@ -1,58 +1,88 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+// ─────────────────────────────────────────────────────────────
+// Axios instance
+// ─────────────────────────────────────────────────────────────
+const BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
 
-// Create axios instance
 const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: BASE_URL,
+  headers: { 'Content-Type': 'application/json' },
+  timeout: 15000, // 15 s
 });
 
-// Request interceptor to add auth token
+// ─── Request interceptor — attach access token ────────────────
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle token refresh
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+// ─── Response interceptor — silent token refresh on 401 ──────
+let isRefreshing   = false;
+let pendingQueue   = []; // requests waiting for refresh
 
-    // If error is 401 and we haven't tried to refresh yet
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+const processQueue = (error, token = null) => {
+  pendingQueue.forEach(({ resolve, reject }) =>
+    error ? reject(error) : resolve(token)
+  );
+  pendingQueue = [];
+};
+
+api.interceptors.response.use(
+  (res) => res,
+  async (error) => {
+    const original = error.config;
+
+    // If 401 and not already retried
+    if (
+      error.response?.status === 401 &&
+      !original._retry &&
+      original.url !== '/auth/token/refresh/'
+    ) {
+      if (isRefreshing) {
+        // Queue this request until refresh completes
+        return new Promise((resolve, reject) => {
+          pendingQueue.push({ resolve, reject });
+        }).then((token) => {
+          original.headers.Authorization = `Bearer ${token}`;
+          return api(original);
+        });
+      }
+
+      original._retry = true;
+      isRefreshing     = true;
+
+      const refreshToken = localStorage.getItem('refresh_token');
+      if (!refreshToken) {
+        processQueue(error);
+        isRefreshing = false;
+        localStorage.clear();
+        window.location.href = '/login';
+        return Promise.reject(error);
+      }
 
       try {
-        const refreshToken = localStorage.getItem('refresh_token');
-        const response = await axios.post(`${API_BASE_URL}/token/refresh/`, {
+        const { data } = await axios.post(`${BASE_URL}/auth/token/refresh/`, {
           refresh: refreshToken,
         });
-
-        const { access } = response.data;
-        localStorage.setItem('access_token', access);
-
-        // Retry original request with new token
-        originalRequest.headers.Authorization = `Bearer ${access}`;
-        return api(originalRequest);
+        const newAccess = data.access;
+        localStorage.setItem('access_token', newAccess);
+        api.defaults.headers.common.Authorization = `Bearer ${newAccess}`;
+        processQueue(null, newAccess);
+        original.headers.Authorization = `Bearer ${newAccess}`;
+        return api(original);
       } catch (refreshError) {
-        // Refresh failed, logout user
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        localStorage.removeItem('user');
+        processQueue(refreshError);
+        localStorage.clear();
         window.location.href = '/login';
         return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
 
@@ -60,55 +90,71 @@ api.interceptors.response.use(
   }
 );
 
-// Auth APIs
+export default api;
+
+// ─────────────────────────────────────────────────────────────
+// Auth API
+// ─────────────────────────────────────────────────────────────
 export const authAPI = {
-  register: (data) => api.post('/auth/register/', data),
-  login: (data) => api.post('/auth/login/', data),
-  logout: (refreshToken) => api.post('/auth/logout/', { refresh_token: refreshToken }),
+  register:     (data)         => api.post('/auth/register/', data),
+  login:        (data)         => api.post('/auth/login/', data),
+  logout:       (refreshToken) => api.post('/auth/logout/', { refresh: refreshToken }),
+  refreshToken: (refresh)      => api.post('/auth/token/refresh/', { refresh }),
 };
 
-// User APIs
+// ─────────────────────────────────────────────────────────────
+// User API
+// ─────────────────────────────────────────────────────────────
 export const userAPI = {
-  getProfile: () => api.get('/users/profile/'),
+  getProfile:    ()     => api.get('/users/profile/'),
   updateProfile: (data) => api.put('/users/update-profile/', data),
-  changePin: (data) => api.post('/users/change-pin/', data),
-  getBalance: () => api.get('/users/balance/'),
+  changePin:     (data) => api.post('/users/change-pin/', data),
+  getBalance:    ()     => api.get('/users/balance/'),
+  lookupPhone:   (phone)=> api.get(`/users/lookup/?phone=${phone}`),
 };
 
-// Transaction APIs
+// ─────────────────────────────────────────────────────────────
+// Transaction API
+// ─────────────────────────────────────────────────────────────
 export const transactionAPI = {
-  getTransactions: (params) => api.get('/transactions/', { params }),
-  getTransaction: (id) => api.get(`/transactions/${id}/`),
-  sendMoney: (data) => api.post('/transactions/send-money/', data),
-  deposit: (data) => api.post('/transactions/deposit/', data),
-  withdraw: (data) => api.post('/transactions/withdraw/', data),
-  getRecent: () => api.get('/transactions/recent/'),
-  getStatistics: () => api.get('/transactions/statistics/'),
+  getTransactions: (params = {}) => api.get('/transactions/', { params }),
+  getTransaction:  (id)          => api.get(`/transactions/${id}/`),
+  sendMoney:       (data)        => api.post('/transactions/send-money/', data),
+  deposit:         (data)        => api.post('/transactions/deposit/', data),
+  withdraw:        (data)        => api.post('/transactions/withdraw/', data),
+  getRecent:       ()            => api.get('/transactions/recent/'),
+  getStatistics:   ()            => api.get('/transactions/statistics/'),
 };
 
-// Wallet APIs
+// ─────────────────────────────────────────────────────────────
+// Wallet API
+// ─────────────────────────────────────────────────────────────
 export const walletAPI = {
   getWallet: () => api.get('/wallets/my-wallet/'),
 };
 
-// Agent APIs
+// ─────────────────────────────────────────────────────────────
+// Agent API
+// ─────────────────────────────────────────────────────────────
 export const agentAPI = {
-  getAgents: (params) => api.get('/agents/', { params }),
-  getNearbyAgents: () => api.get('/agents/nearby/'),
+  getAgents:      (params = {}) => api.get('/agents/', { params }),
+  getNearbyAgents:(params = {}) => api.get('/agents/nearby/', { params }),
 };
 
-// Notification APIs
+// ─────────────────────────────────────────────────────────────
+// Notification API
+// ─────────────────────────────────────────────────────────────
 export const notificationAPI = {
-  getNotifications: (params) => api.get('/notifications/', { params }),
-  markAsRead: (id) => api.post(`/notifications/${id}/mark-read/`),
-  markAllAsRead: () => api.post('/notifications/mark-all-read/'),
-  getUnreadCount: () => api.get('/notifications/unread-count/'),
-  clearAll: () => api.delete('/notifications/clear-all/'),
+  getNotifications: (params = {}) => api.get('/notifications/', { params }),
+  markAsRead:       (id)          => api.post(`/notifications/${id}/mark-read/`),
+  markAllAsRead:    ()            => api.post('/notifications/mark-all-read/'),
+  getUnreadCount:   ()            => api.get('/notifications/unread-count/'),
+  clearAll:         ()            => api.delete('/notifications/clear-all/'),
 };
 
-// Transaction Charge APIs
+// ─────────────────────────────────────────────────────────────
+// Charges API
+// ─────────────────────────────────────────────────────────────
 export const chargeAPI = {
-  getCharges: (params) => api.get('/charges/', { params }),
+  getCharges: () => api.get('/charges/'),
 };
-
-export default api;
