@@ -45,6 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=100)
     email = models.EmailField(blank=True, null=True)
     id_number = models.CharField(max_length=20, unique=True)
+    pin = models.IntegerField(default = 0000)
     
     # Account details
     account_balance = models.DecimalField(
@@ -66,7 +67,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     
     USERNAME_FIELD = 'phone_number'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'id_number']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'id_number', 'pin']
     
     class Meta:
         db_table = 'users'

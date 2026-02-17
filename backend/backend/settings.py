@@ -234,7 +234,7 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
-        'mpesa_app': {
+        'web_app': {
             'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': False,
