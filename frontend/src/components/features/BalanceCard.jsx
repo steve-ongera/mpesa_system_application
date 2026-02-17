@@ -4,6 +4,7 @@ import Card from '../common/Card';
 import { useAuthStore } from '../../store';
 import { userAPI } from '../../services/api';
 import toast from 'react-hot-toast';
+import './balance-card.css'; // Import the CSS file
 
 const BalanceCard = () => {
   const { user, updateUser } = useAuthStore();
@@ -31,57 +32,67 @@ const BalanceCard = () => {
   };
 
   return (
-    <Card 
-      className="bg-gradient-to-br from-green-600 to-green-700 text-white"
-      padding="lg"
-    >
-      <div className="flex items-start justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-            <Wallet className="text-white" size={24} />
+    <div className="balance-card">
+      {/* Header */}
+      <div className="balance-header">
+        <div className="balance-info">
+          <div className="balance-icon-wrapper">
+            <Wallet className="balance-icon" />
           </div>
-          <div>
-            <p className="text-green-100 text-sm">Available Balance</p>
-            <p className="text-xs text-green-200 mt-1">{user?.phone_number}</p>
+          <div className="balance-text">
+            <p className="balance-label">Available Balance</p>
+            <p className="balance-phone">{user?.phone_number}</p>
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="balance-actions">
           <button
             onClick={() => setShowBalance(!showBalance)}
-            className="p-2 rounded-lg bg-white bg-opacity-20 hover:bg-opacity-30 transition-colors"
+            className="balance-action-btn"
+            aria-label={showBalance ? 'Hide balance' : 'Show balance'}
           >
-            {showBalance ? <Eye size={20} /> : <EyeOff size={20} />}
+            {showBalance ? <Eye /> : <EyeOff />}
           </button>
           <button
             onClick={refreshBalance}
             disabled={loading}
-            className="p-2 rounded-lg bg-white bg-opacity-20 hover:bg-opacity-30 transition-colors disabled:opacity-50"
+            className="balance-action-btn"
+            aria-label="Refresh balance"
           >
-            <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
+            <RefreshCw className={loading ? 'spinning' : ''} />
           </button>
         </div>
       </div>
 
-      <div className="mb-2">
-        <h2 className="text-4xl font-bold">
-          {showBalance 
-            ? formatCurrency(user?.account_balance || 0)
-            : '••••••'
-          }
-        </h2>
+      {/* Balance Amount */}
+      <div className="balance-amount-container">
+        {showBalance ? (
+          <h2 className="balance-amount">
+            {formatCurrency(user?.account_balance || 0)}
+          </h2>
+        ) : (
+          <h2 className="balance-hidden">••••••</h2>
+        )}
       </div>
 
-      <div className="flex items-center justify-between mt-6 pt-6 border-t border-white border-opacity-20">
-        <div>
-          <p className="text-xs text-green-100">Account Status</p>
-          <p className="text-sm font-medium mt-1">
-            {user?.is_verified ? '✓ Verified' : 'Unverified'}
+      {/* Footer */}
+      <div className="balance-footer">
+        <div className="balance-footer-item">
+          <p className="balance-footer-label">Account Status</p>
+          <p className="balance-footer-value">
+            {user?.is_verified ? (
+              <span className="verified-status">
+                ✓ Verified
+                <span className="verified-badge">✓</span>
+              </span>
+            ) : (
+              'Unverified'
+            )}
           </p>
         </div>
-        <div className="text-right">
-          <p className="text-xs text-green-100">Member Since</p>
-          <p className="text-sm font-medium mt-1">
+        <div className="balance-footer-item balance-footer-value-right">
+          <p className="balance-footer-label">Member Since</p>
+          <p className="balance-footer-value">
             {new Date(user?.date_joined).toLocaleDateString('en-US', { 
               month: 'short', 
               year: 'numeric' 
@@ -89,7 +100,7 @@ const BalanceCard = () => {
           </p>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 

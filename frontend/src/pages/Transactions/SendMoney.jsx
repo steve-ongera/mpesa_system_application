@@ -12,6 +12,8 @@ import Badge from '../../components/common/Badge';
 import { transactionAPI } from '../../services/api';
 import { useAuthStore, useTransactionStore } from '../../store';
 import toast from 'react-hot-toast';
+import './send-money.css'; // Import the CSS file
+
 
 /* ─── helpers ─────────────────────────────────────────── */
 const fmt = (v) =>
@@ -42,27 +44,23 @@ const calcFee = (amount) => {
 const StepBar = ({ current }) => {
   const steps = ['Details', 'Review', 'Confirm'];
   return (
-    <div className="flex items-center mb-8">
+    <div className="step-bar">
       {steps.map((label, i) => {
         const n = i + 1;
         const done   = current > n;
         const active = current === n;
         return (
           <React.Fragment key={n}>
-            <div className="flex flex-col items-center">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all
-                ${done   ? 'bg-green-500 text-white'
-                  : active ? 'bg-green-600 text-white ring-4 ring-green-100'
-                  : 'bg-gray-200 text-gray-400'}`}>
+            <div className="step-item">
+              <div className={`step-number ${done ? 'done' : active ? 'active' : 'pending'}`}>
                 {done ? '✓' : n}
               </div>
-              <span className={`text-[11px] mt-1 font-medium hidden sm:block
-                ${active ? 'text-green-700' : 'text-gray-400'}`}>
+              <span className={`step-label ${active ? 'active' : 'pending'}`}>
                 {label}
               </span>
             </div>
             {i < steps.length - 1 && (
-              <div className={`flex-1 h-0.5 mx-2 mb-4 transition-colors ${current > n ? 'bg-green-400' : 'bg-gray-200'}`} />
+              <div className={`step-connector ${current > n ? 'active' : 'pending'}`} />
             )}
           </React.Fragment>
         );
@@ -163,39 +161,39 @@ const SendMoney = () => {
   ═══════════════════════════════════════════ */
   if (success) {
     return (
-      <div className="max-w-md mx-auto py-10 text-center animate-fadeInUp">
-        <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-          <CheckCircle className="text-green-500" size={52} />
+      <div className="success-screen">
+        <div className="success-icon-wrapper">
+          <CheckCircle />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Money Sent! 🎉</h1>
-        <p className="text-gray-500 mb-6">
+        <h1 className="success-title">Money Sent! 🎉</h1>
+        <p className="success-subtitle">
           {fmt(success.amount)} sent to {fmtPhone(form.receiver_phone)}
         </p>
 
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-left space-y-3 mb-8">
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Transaction Code</span>
-            <span className="font-mono font-bold text-gray-800">{success.transaction_code}</span>
+        <div className="success-details">
+          <div className="success-detail-row">
+            <span className="success-detail-label">Transaction Code</span>
+            <span className="success-detail-code">{success.transaction_code}</span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Recipient</span>
-            <span className="font-medium">{fmtPhone(form.receiver_phone)}</span>
+          <div className="success-detail-row">
+            <span className="success-detail-label">Recipient</span>
+            <span className="success-detail-value">{fmtPhone(form.receiver_phone)}</span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Amount sent</span>
-            <span className="font-medium">{fmt(success.amount)}</span>
+          <div className="success-detail-row">
+            <span className="success-detail-label">Amount sent</span>
+            <span className="success-detail-value">{fmt(success.amount)}</span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Fee</span>
-            <span className="font-medium">{success.transaction_cost > 0 ? fmt(success.transaction_cost) : 'Free'}</span>
+          <div className="success-detail-row">
+            <span className="success-detail-label">Fee</span>
+            <span className="success-detail-value">{success.transaction_cost > 0 ? fmt(success.transaction_cost) : 'Free'}</span>
           </div>
-          <div className="flex justify-between text-sm font-bold pt-3 border-t">
+          <div className="success-detail-total">
             <span>New Balance</span>
-            <span className="text-green-600">{fmt(user?.account_balance)}</span>
+            <span className="success-balance">{fmt(user?.account_balance)}</span>
           </div>
         </div>
 
-        <div className="flex gap-3">
+        <div className="success-actions">
           <Button variant="outline" fullWidth onClick={() => navigate('/transactions')}>
             View History
           </Button>
@@ -211,33 +209,35 @@ const SendMoney = () => {
      STEP FORMS
   ═══════════════════════════════════════════ */
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="send-money-container">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
+      <div className="send-money-header">
         {step > 1 && (
           <button onClick={() => { setStep(step - 1); setApiError(''); }}
-            className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-            <ArrowLeft size={22} className="text-gray-600" />
+            className="send-money-back-btn">
+            <ArrowLeft size={22} />
           </button>
         )}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Send Money</h1>
-          <p className="text-gray-500 mt-0.5">Transfer instantly to any M-Pesa user</p>
+          <h1 className="send-money-title">Send Money</h1>
+          <p className="send-money-subtitle">Transfer instantly to any M-Pesa user</p>
         </div>
       </div>
 
       <StepBar current={step} />
 
       {apiError && (
-        <Alert type="error" message={apiError} onClose={() => setApiError('')} className="mb-5" />
+        <div className="alert-wrapper">
+          <Alert type="error" message={apiError} onClose={() => setApiError('')} />
+        </div>
       )}
 
       {/* ─── STEP 1: Details ─────────────────────────────── */}
       {step === 1 && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid-2col">
           {/* Form */}
-          <Card className="lg:col-span-2">
-            <div className="space-y-5">
+          <div className="form-card">
+            <div className="form-space">
               <Input
                 label="Recipient Phone Number"
                 type="tel"
@@ -254,15 +254,17 @@ const SendMoney = () => {
 
               {/* Recipient preview */}
               {form.receiver_phone.length === 12 && !fieldErrors.receiver_phone && (
-                <div className="flex items-center gap-3 px-4 py-3 bg-green-50 border border-green-200 rounded-xl">
-                  <div className="w-9 h-9 bg-green-200 rounded-full flex items-center justify-center">
-                    <User size={17} className="text-green-700" />
+                <div className="recipient-preview">
+                  <div className="recipient-avatar">
+                    <User />
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold text-green-800">{fmtPhone(form.receiver_phone)}</p>
-                    <p className="text-xs text-green-600">M-Pesa registered number</p>
+                  <div className="recipient-info">
+                    <p className="recipient-phone">{fmtPhone(form.receiver_phone)}</p>
+                    <p className="recipient-status">M-Pesa registered number</p>
                   </div>
-                  <Badge variant="success" size="sm" className="ml-auto">Valid</Badge>
+                  <div className="recipient-badge">
+                    <Badge variant="success" size="sm">Valid</Badge>
+                  </div>
                 </div>
               )}
 
@@ -281,19 +283,19 @@ const SendMoney = () => {
 
               {/* Live fee breakdown */}
               {form.amount && parseFloat(form.amount) > 0 && (
-                <div className="rounded-xl border border-blue-100 bg-blue-50 overflow-hidden">
-                  <div className="px-4 py-3 space-y-2">
-                    <div className="flex justify-between text-sm text-gray-600">
+                <div className="fee-breakdown">
+                  <div className="fee-content">
+                    <div className="fee-row">
                       <span>Amount to send</span>
-                      <span className="font-medium">{fmt(form.amount)}</span>
+                      <span className="fee-row-amount">{fmt(form.amount)}</span>
                     </div>
-                    <div className="flex justify-between text-sm text-gray-600">
+                    <div className="fee-row">
                       <span>Transaction fee</span>
-                      <span className={`font-medium ${fee === 0 ? 'text-green-600' : 'text-orange-600'}`}>
+                      <span className={fee === 0 ? 'fee-free' : 'fee-paid'}>
                         {fee === 0 ? 'Free ✓' : fmt(fee)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm font-bold text-gray-900 pt-2 border-t border-blue-200">
+                    <div className="fee-row-total">
                       <span>Total deducted</span>
                       <span>{fmt(total)}</span>
                     </div>
@@ -322,112 +324,112 @@ const SendMoney = () => {
                 Review Transaction
               </Button>
             </div>
-          </Card>
+          </div>
 
           {/* Sidebar */}
-          <div className="space-y-4">
+          <div>
             {/* Fee table toggle */}
-            <Card padding="sm">
+            <div className="sidebar-card">
               <button
-                className="w-full flex items-center justify-between p-2 text-sm font-semibold text-gray-700"
+                className="sidebar-toggle"
                 onClick={() => setShowFees(!showFees)}
               >
-                <span className="flex items-center gap-2">
-                  <Info size={15} className="text-blue-500" />
+                <span className="sidebar-toggle-left">
+                  <Info size={15} className="sidebar-toggle-icon" />
                   Charges
                 </span>
-                <span className="text-gray-400 text-xs">{showFees ? '▲ Hide' : '▼ Show'}</span>
+                <span className="sidebar-toggle-arrow">{showFees ? '▲ Hide' : '▼ Show'}</span>
               </button>
               {showFees && (
-                <div className="mt-1 divide-y divide-gray-100">
+                <div className="fee-table">
                   {SEND_FEES.map(({ min, max, fee: f }) => (
-                    <div key={min} className="flex justify-between py-1.5 px-2 text-xs">
-                      <span className="text-gray-500">
+                    <div key={min} className="fee-table-row">
+                      <span className="fee-table-label">
                         {min === 1 ? '1' : min.toLocaleString()} – {max.toLocaleString()}
                       </span>
-                      <span className="font-medium">{f === 0 ? 'Free' : `KES ${f}`}</span>
+                      <span className="fee-table-value">{f === 0 ? 'Free' : `KES ${f}`}</span>
                     </div>
                   ))}
                 </div>
               )}
-            </Card>
+            </div>
 
             {/* Limits */}
-            <Card padding="sm">
-              <div className="p-2 space-y-2">
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">Limits</p>
+            <div className="sidebar-card">
+              <div className="limits-card">
+                <p className="limits-title">Limits</p>
                 {[
                   ['Minimum send', 'KES 10'],
                   ['Per transaction', 'KES 150,000'],
                   ['Daily limit', 'KES 150,000'],
                 ].map(([label, val]) => (
-                  <div key={label} className="flex justify-between text-xs">
-                    <span className="text-gray-500">{label}</span>
-                    <span className="font-semibold text-gray-800">{val}</span>
+                  <div key={label} className="limits-row">
+                    <span className="limits-label">{label}</span>
+                    <span className="limits-value">{val}</span>
                   </div>
                 ))}
               </div>
-            </Card>
+            </div>
           </div>
         </div>
       )}
 
       {/* ─── STEP 2: Review ──────────────────────────────── */}
       {step === 2 && (
-        <Card className="max-w-lg mx-auto">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Review Transaction</h2>
+        <div className="review-card">
+          <h2 className="review-title">Review Transaction</h2>
 
           {/* Recipient */}
-          <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl mb-4">
-            <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center">
-              <User size={28} className="text-green-600" />
+          <div className="review-recipient">
+            <div className="review-recipient-avatar">
+              <User />
             </div>
             <div>
-              <p className="text-xs text-gray-400 mb-0.5">Sending to</p>
-              <p className="text-lg font-bold text-gray-900">{fmtPhone(form.receiver_phone)}</p>
+              <p className="review-recipient-label">Sending to</p>
+              <p className="review-recipient-number">{fmtPhone(form.receiver_phone)}</p>
             </div>
           </div>
 
           {/* Amount breakdown */}
-          <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-2xl p-5 mb-4 space-y-3">
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Amount</span>
-              <span className="font-semibold">{fmt(form.amount)}</span>
+          <div className="review-amount-box">
+            <div className="review-amount-row">
+              <span className="review-amount-label">Amount</span>
+              <span className="review-amount-value">{fmt(form.amount)}</span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Transaction fee</span>
-              <span className={`font-semibold ${fee === 0 ? 'text-green-600' : 'text-orange-600'}`}>
+            <div className="review-amount-row">
+              <span className="review-amount-label">Transaction fee</span>
+              <span className={fee === 0 ? 'fee-free' : 'fee-paid'}>
                 {fee === 0 ? 'Free' : fmt(fee)}
               </span>
             </div>
-            <div className="flex justify-between text-lg font-bold border-t border-green-300 pt-3">
-              <span>Total deducted</span>
-              <span className="text-green-700">{fmt(total)}</span>
+            <div className="review-total-row">
+              <span className="review-total-label">Total deducted</span>
+              <span className="review-total-value">{fmt(total)}</span>
             </div>
           </div>
 
           {/* Balance after */}
-          <div className="flex justify-between text-sm px-4 py-3 bg-gray-50 rounded-xl mb-4">
-            <span className="text-gray-500">Balance after transaction</span>
-            <span className="font-bold text-gray-800">{fmt(balance - total)}</span>
+          <div className="review-balance">
+            <span className="review-balance-label">Balance after transaction</span>
+            <span className="review-balance-value">{fmt(balance - total)}</span>
           </div>
 
           {form.description && (
-            <div className="px-4 py-3 bg-gray-50 rounded-xl mb-4">
-              <p className="text-xs text-gray-400 mb-1">Description</p>
-              <p className="text-sm text-gray-700 font-medium">"{form.description}"</p>
+            <div className="review-description">
+              <p className="review-description-label">Description</p>
+              <p className="review-description-text">"{form.description}"</p>
             </div>
           )}
 
           {/* Warning */}
-          <div className="flex items-start gap-3 p-3 bg-yellow-50 border border-yellow-200 rounded-xl mb-6">
-            <AlertTriangle size={16} className="text-yellow-600 flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-yellow-700 leading-relaxed">
+          <div className="review-warning">
+            <AlertTriangle size={16} className="review-warning-icon" />
+            <p className="review-warning-text">
               Verify the phone number before confirming. Completed transactions <strong>cannot be reversed</strong>.
             </p>
           </div>
 
-          <div className="flex gap-3">
+          <div className="review-actions">
             <Button variant="outline" onClick={() => setStep(1)} fullWidth>
               Edit Details
             </Button>
@@ -435,67 +437,65 @@ const SendMoney = () => {
               Enter PIN
             </Button>
           </div>
-        </Card>
+        </div>
       )}
 
       {/* ─── STEP 3: PIN Confirmation ─────────────────────── */}
       {step === 3 && (
-        <div className="max-w-sm mx-auto">
-          <Card>
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Lock className="text-green-600" size={30} />
-              </div>
-              <h2 className="text-xl font-bold text-gray-900">Confirm with PIN</h2>
-              <p className="text-sm text-gray-500 mt-2">
-                Sending {fmt(form.amount)} to {fmtPhone(form.receiver_phone)}
-              </p>
+        <div className="pin-card">
+          <div className="pin-header">
+            <div className="pin-icon-wrapper">
+              <Lock />
             </div>
-
-            <div className="bg-gray-50 rounded-xl p-4 mb-5 space-y-1.5 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Amount</span>
-                <span className="font-medium">{fmt(form.amount)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Fee</span>
-                <span className="font-medium">{fee === 0 ? 'Free' : fmt(fee)}</span>
-              </div>
-              <div className="flex justify-between font-bold border-t pt-1.5 mt-1.5">
-                <span>Total</span>
-                <span>{fmt(total)}</span>
-              </div>
-            </div>
-
-            <Input
-              label="Enter your 4-digit PIN"
-              type="password"
-              name="pin"
-              value={pin}
-              onChange={(v) => { setPin(v); setApiError(''); }}
-              placeholder="••••"
-              icon={<Lock size={18} />}
-              maxLength={4}
-              error={apiError}
-              autoFocus
-            />
-
-            <Button
-              variant="primary"
-              size="lg"
-              fullWidth
-              loading={loading}
-              disabled={loading || pin.length !== 4}
-              onClick={handleConfirm}
-              className="mt-4"
-            >
-              {loading ? 'Sending…' : `Confirm & Send ${fmt(total)}`}
-            </Button>
-
-            <p className="text-center text-xs text-gray-400 mt-4">
-              🔒 Secured with end-to-end encryption
+            <h2 className="pin-title">Confirm with PIN</h2>
+            <p className="pin-subtitle">
+              Sending {fmt(form.amount)} to {fmtPhone(form.receiver_phone)}
             </p>
-          </Card>
+          </div>
+
+          <div className="pin-summary">
+            <div className="pin-summary-row">
+              <span className="pin-summary-label">Amount</span>
+              <span className="pin-summary-value">{fmt(form.amount)}</span>
+            </div>
+            <div className="pin-summary-row">
+              <span className="pin-summary-label">Fee</span>
+              <span className="pin-summary-value">{fee === 0 ? 'Free' : fmt(fee)}</span>
+            </div>
+            <div className="pin-summary-total">
+              <span>Total</span>
+              <span>{fmt(total)}</span>
+            </div>
+          </div>
+
+          <Input
+            label="Enter your 4-digit PIN"
+            type="password"
+            name="pin"
+            value={pin}
+            onChange={(v) => { setPin(v); setApiError(''); }}
+            placeholder="••••"
+            icon={<Lock size={18} />}
+            maxLength={4}
+            error={apiError}
+            autoFocus
+          />
+
+          <Button
+            variant="primary"
+            size="lg"
+            fullWidth
+            loading={loading}
+            disabled={loading || pin.length !== 4}
+            onClick={handleConfirm}
+            className="mt-4"
+          >
+            {loading ? <span><span className="loading-spinner"></span>Sending…</span> : `Confirm & Send ${fmt(total)}`}
+          </Button>
+
+          <p className="pin-footer">
+            🔒 Secured with end-to-end encryption
+          </p>
         </div>
       )}
     </div>

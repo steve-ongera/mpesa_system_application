@@ -8,6 +8,7 @@ import { useAuthStore, useTransactionStore } from '../../store';
 import { transactionAPI } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import './dashboard.css'; // Import the CSS file
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -42,28 +43,28 @@ const Dashboard = () => {
       title: 'Send Money',
       description: 'Transfer to any number',
       icon: ArrowUpRight,
-      color: 'bg-green-500',
+      color: 'icon-bg-green',
       path: '/send-money',
     },
     {
       title: 'Deposit',
       description: 'Add money to wallet',
       icon: ArrowDownLeft,
-      color: 'bg-blue-500',
+      color: 'icon-bg-blue',
       path: '/deposit',
     },
     {
       title: 'Withdraw',
       description: 'Get cash from agent',
       icon: TrendingUp,
-      color: 'bg-orange-500',
+      color: 'icon-bg-orange',
       path: '/withdraw',
     },
     {
       title: 'Transactions',
       description: 'View your history',
       icon: Activity,
-      color: 'bg-purple-500',
+      color: 'icon-bg-purple',
       path: '/transactions',
     },
   ];
@@ -89,71 +90,65 @@ const Dashboard = () => {
   };
 
   const getTransactionColor = (type) => {
-    return type === 'SEND' || type === 'WITHDRAW' ? 'text-red-600' : 'text-green-600';
+    return type === 'SEND' || type === 'WITHDRAW' ? 'amount-negative' : 'amount-positive';
   };
 
   return (
-    <div className="space-y-6">
+    <div className="dashboard-container">
       {/* Welcome Section */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+      <div className="welcome-section">
+        <h1 className="welcome-title">
           Welcome back, {user?.first_name}! 👋
         </h1>
-        <p className="text-gray-600">
+        <p className="welcome-subtitle">
           Here's what's happening with your account today.
         </p>
       </div>
 
       {/* Balance and Stats Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid-2col">
         {/* Balance Card - Spans 2 columns */}
-        <div className="lg:col-span-2">
+        <div>
           <BalanceCard />
         </div>
 
         {/* Monthly Stats */}
-        <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-blue-100 text-sm">This Month</p>
-                <h3 className="text-3xl font-bold mt-1">
-                  {statistics?.monthly_sent_count || 0}
-                </h3>
-                <p className="text-blue-100 text-sm mt-1">Transactions</p>
-              </div>
-              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                <Activity size={24} />
-              </div>
+        <div className="stats-card">
+          <div className="stats-header">
+            <div>
+              <p className="stats-label">This Month</p>
+              <h3 className="stats-value">
+                {statistics?.monthly_sent_count || 0}
+              </h3>
+              <p className="stats-label">Transactions</p>
             </div>
-            <div className="pt-4 border-t border-white border-opacity-20">
-              <p className="text-xs text-blue-100">
-                {statistics?.monthly_received_count || 0} received
-              </p>
+            <div className="stats-icon">
+              <Activity />
             </div>
           </div>
-        </Card>
+          <div className="stats-footer">
+            <p>{statistics?.monthly_received_count || 0} received</p>
+          </div>
+        </div>
       </div>
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <h2 className="quick-actions-title">Quick Actions</h2>
+        <div className="quick-actions-grid">
           {quickActions.map((action) => {
             const Icon = action.icon;
             return (
               <button
                 key={action.path}
                 onClick={() => navigate(action.path)}
-                className="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg hover:border-green-300 transition-all duration-200 text-left group"
+                className="quick-action-card"
               >
-                <div className={`w-12 h-12 ${action.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <Icon className="text-white" size={24} />
+                <div className={`quick-action-icon-wrapper ${action.color}`}>
+                  <Icon className="quick-action-icon" />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-1">
-                  {action.title}
-                </h3>
-                <p className="text-sm text-gray-500">{action.description}</p>
+                <h3 className="quick-action-title">{action.title}</h3>
+                <p className="quick-action-description">{action.description}</p>
               </button>
             );
           })}
@@ -161,54 +156,48 @@ const Dashboard = () => {
       </div>
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Total Sent</p>
-              <h3 className="text-2xl font-bold text-gray-900">
-                {formatCurrency(statistics?.total_sent)}
-              </h3>
+      <div className="statistics-grid">
+        <div className="stat-card">
+          <div className="stat-card-content">
+            <div className="stat-info">
+              <p className="stat-label">Total Sent</p>
+              <h3 className="stat-amount">{formatCurrency(statistics?.total_sent)}</h3>
             </div>
-            <div className="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
-              <ArrowUpRight className="text-red-600" size={24} />
+            <div className="stat-icon-wrapper icon-bg-red-light">
+              <ArrowUpRight className="stat-icon-red" size={24} />
             </div>
           </div>
-        </Card>
+        </div>
 
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Total Received</p>
-              <h3 className="text-2xl font-bold text-gray-900">
-                {formatCurrency(statistics?.total_received)}
-              </h3>
+        <div className="stat-card">
+          <div className="stat-card-content">
+            <div className="stat-info">
+              <p className="stat-label">Total Received</p>
+              <h3 className="stat-amount">{formatCurrency(statistics?.total_received)}</h3>
             </div>
-            <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
-              <ArrowDownLeft className="text-green-600" size={24} />
+            <div className="stat-icon-wrapper icon-bg-green-light">
+              <ArrowDownLeft className="stat-icon-green" size={24} />
             </div>
           </div>
-        </Card>
+        </div>
 
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Current Balance</p>
-              <h3 className="text-2xl font-bold text-gray-900">
-                {formatCurrency(user?.account_balance)}
-              </h3>
+        <div className="stat-card">
+          <div className="stat-card-content">
+            <div className="stat-info">
+              <p className="stat-label">Current Balance</p>
+              <h3 className="stat-amount">{formatCurrency(user?.account_balance)}</h3>
             </div>
-            <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-              <TrendingUp className="text-blue-600" size={24} />
+            <div className="stat-icon-wrapper icon-bg-blue-light">
+              <TrendingUp className="stat-icon-blue" size={24} />
             </div>
           </div>
-        </Card>
+        </div>
       </div>
 
       {/* Recent Transactions */}
-      <Card
-        title="Recent Transactions"
-        headerAction={
+      <div className="transactions-card">
+        <div className="transactions-header">
+          <h3 className="transactions-title">Recent Transactions</h3>
           <Button
             variant="ghost"
             size="sm"
@@ -216,59 +205,52 @@ const Dashboard = () => {
           >
             View All
           </Button>
-        }
-      >
+        </div>
+        
         {loading ? (
-          <div className="flex justify-center py-8">
+          <div className="loading-container">
             <Spinner text="Loading transactions..." />
           </div>
         ) : recentTransactions && recentTransactions.length > 0 ? (
-          <div className="space-y-3">
+          <div className="transactions-list">
             {recentTransactions.slice(0, 5).map((transaction) => (
               <div
                 key={transaction.id}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                className="transaction-item"
                 onClick={() => navigate(`/transactions/${transaction.id}`)}
               >
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full bg-white flex items-center justify-center text-xl ${getTransactionColor(transaction.transaction_type)}`}>
+                <div className="transaction-left">
+                  <div className={`transaction-icon ${getTransactionColor(transaction.transaction_type)}`}>
                     {getTransactionIcon(transaction.transaction_type)}
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-900">
-                      {transaction.transaction_type}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      {transaction.transaction_code}
-                    </p>
+                  <div className="transaction-details">
+                    <p className="transaction-type">{transaction.transaction_type}</p>
+                    <p className="transaction-code">{transaction.transaction_code}</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className={`font-bold ${getTransactionColor(transaction.transaction_type)}`}>
+                <div className="transaction-right">
+                  <p className={`transaction-amount ${getTransactionColor(transaction.transaction_type)}`}>
                     {transaction.transaction_type === 'SEND' || transaction.transaction_type === 'WITHDRAW' ? '-' : '+'}
                     {formatCurrency(transaction.amount)}
                   </p>
-                  <p className="text-xs text-gray-500">
-                    {formatDate(transaction.created_at)}
-                  </p>
+                  <p className="transaction-date">{formatDate(transaction.created_at)}</p>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No transactions yet</p>
+          <div className="empty-state">
+            <p className="empty-text">No transactions yet</p>
             <Button
               variant="primary"
               size="sm"
               onClick={() => navigate('/send-money')}
-              className="mt-4"
             >
               Send Your First Transaction
             </Button>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 };
