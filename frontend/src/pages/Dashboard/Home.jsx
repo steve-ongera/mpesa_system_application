@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Send, Shield, Clock, TrendingUp, Phone, Users, Globe, Award } from 'lucide-react';
 import Button from '../../components/common/Button';
-import '../../styles/safaricom-mpesa-theme.css';
+import './home.css'; // Import the CSS file
 
 const Home = () => {
   const navigate = useNavigate();
@@ -62,8 +62,8 @@ const Home = () => {
         <div className="container">
           <div className="hero-content text-center max-w-4xl mx-auto">
             <div className="flex justify-center mb-6 animate-fadeInUp">
-              <div className="bg-mpesa-light p-3 rounded-full">
-                <Phone className="text-safaricom-green" size={48} />
+              <div className="bg-mpesa-light">
+                <Phone size={48} />
               </div>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold text-safaricom-text mb-6 animate-fadeInUp" style={{animationDelay: '0.2s'}}>
@@ -75,22 +75,18 @@ const Home = () => {
               Join millions of users managing their finances better.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fadeInUp" style={{animationDelay: '0.4s'}}>
-              <Button
-                variant="primary"
-                size="xl"
+              <button
+                className="btn-primary btn-xl"
                 onClick={() => navigate('/register')}
-                className="btn-primary"
               >
                 Get Started Free
-              </Button>
-              <Button
-                variant="outline"
-                size="xl"
+              </button>
+              <button
+                className="btn-secondary btn-xl"
                 onClick={() => navigate('/login')}
-                className="btn-secondary"
               >
                 Sign In
-              </Button>
+              </button>
             </div>
 
             {/* Trust Indicators */}
@@ -121,7 +117,7 @@ const Home = () => {
               return (
                 <div key={index} className="stat-card animate-fadeInUp" style={{animationDelay: `${index * 0.1}s`}}>
                   <div className="flex justify-center mb-3">
-                    <Icon className="text-safaricom-green" size={32} />
+                    <Icon size={32} />
                   </div>
                   <div className="stat-value">
                     {stat.value}
@@ -152,7 +148,7 @@ const Home = () => {
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <div key={index} className="feature-card card animate-fadeInUp" style={{animationDelay: `${index * 0.1 + 0.2}s`}}>
+                <div key={index} className="feature-card animate-fadeInUp" style={{animationDelay: `${index * 0.1 + 0.2}s`}}>
                   <div className="feature-icon">
                     <Icon />
                   </div>
@@ -184,7 +180,7 @@ const Home = () => {
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {steps.map((step, index) => (
-                <div key={index} className="step-card card animate-fadeInUp" style={{animationDelay: `${index * 0.1 + 0.2}s`}}>
+                <div key={index} className="step-card animate-fadeInUp" style={{animationDelay: `${index * 0.1 + 0.2}s`}}>
                   <div className="step-number">
                     {step.number}
                   </div>
@@ -203,14 +199,12 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-12 animate-fadeInUp" style={{animationDelay: '0.5s'}}>
-            <Button
-              variant="primary"
-              size="lg"
+            <button
+              className="btn-primary btn-lg"
               onClick={() => navigate('/register')}
-              className="btn-primary"
             >
               Start Your Journey
-            </Button>
+            </button>
           </div>
         </div>
       </div>
@@ -226,17 +220,15 @@ const Home = () => {
               Join millions of users already enjoying seamless transactions
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fadeInUp" style={{animationDelay: '0.2s'}}>
-              <Button
-                variant="secondary"
-                size="xl"
+              <button
+                className="btn-secondary btn-xl"
                 onClick={() => navigate('/register')}
-                className="bg-white text-safaricom-green hover:bg-white/90 border-0"
               >
                 Create Free Account
-              </Button>
+              </button>
               <button
                 onClick={() => navigate('/login')}
-                className="btn-secondary bg-transparent text-white border-white hover:bg-white hover:text-safaricom-green"
+                className="btn-outline-light btn-xl"
               >
                 Sign In
               </button>
@@ -248,7 +240,7 @@ const Home = () => {
       {/* Footer */}
       <footer className="footer">
         <div className="container text-center">
-          <p className="text-white/60">
+          <p>
             © 2024 M-Pesa System. All rights reserved.
           </p>
         </div>
